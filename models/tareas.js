@@ -9,8 +9,9 @@ const getById = (id) => {
 };
 
 const deleteById = (id) => {
-  // TODO...
+  return arrayTareas.splice(getById(id),1);
 };
+
 const updateById = (id) => {
   // TODO...
 };

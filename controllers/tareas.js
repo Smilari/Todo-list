@@ -21,7 +21,19 @@ const getById = (req, res) => {
 };
 
 const deleteById = (req, res) => {
-  // TODO...
+  let { id } = req.params;
+  const idINT = parseInt(id);
+
+  const actividad = tareasModel.getById(idINT);
+
+  if (actividad) {
+    res.json(tareasModel.deleteById(id));
+  } else {
+    res.status(404).json({
+      id,
+      encontrado: false,
+    });
+  }
 };
 const updateById = (req, res) => {
   // TODO...
