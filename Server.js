@@ -20,7 +20,7 @@ class Server {
   }
 
   loadRutas() {
-    this.app.use("/api/actividades", require("./routes/actividades"));
+    this.app.use("/api/tareas", require("./routes/tareas"));
   }
 
   connectBD() {

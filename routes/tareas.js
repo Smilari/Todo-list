@@ -8,7 +8,7 @@ const {
   deleteById,
   updateById,
   add,
-} = require("../controllers/actividades");
+} = require("../controllers/tareas");
 
 router.get("/", getAll);
 router.get("/:id", getById);

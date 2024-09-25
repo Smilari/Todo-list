@@ -1,11 +1,11 @@
-const arrayActividades = require("../data/actividades");
+const arrayTareas = require("../data/tareas");
 
 const getAll = () => {
-  return arrayActividades;
+  return arrayTareas;
 };
 
 const getById = (id) => {
-  return arrayActividades.find((ing) => ing._id === id);
+  return arrayTareas.find((tar) => tar._id === id);
 };
 
 const deleteById = (id) => {

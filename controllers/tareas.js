@@ -1,14 +1,14 @@
-const actividadesModel = require("../models/actividades");
+const tareasModel = require("../models/tareas");
 
 const getAll = (req, res) => {
-  res.json(actividadesModel.getAll());
+  res.json(tareasModel.getAll());
 };
 
 const getById = (req, res) => {
   let { id } = req.params;
   const idINT = parseInt(id);
 
-  const actividad = actividadesModel.getById(idINT);
+  const actividad = tareasModel.getById(idINT);
 
   if (actividad) {
     res.json(actividad);
