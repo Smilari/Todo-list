@@ -8,10 +8,10 @@ const getById = (req, res) => {
   let { id } = req.params;
   const idINT = parseInt(id);
 
-  const actividad = tareasModel.getById(idINT);
+  const tarea = tareasModel.getById(idINT);
 
-  if (actividad) {
-    res.json(actividad);
+  if (tarea) {
+    res.json(tarea);
   } else {
     res.status(404).json({
       id,
@@ -24,9 +24,9 @@ const deleteById = (req, res) => {
   let { id } = req.params;
   const idINT = parseInt(id);
 
-  const actividad = tareasModel.getById(idINT);
+  const tarea = tareasModel.getById(idINT);
 
-  if (actividad) {
+  if (tarea) {
     res.json(tareasModel.deleteById(id));
   } else {
     res.status(404).json({
@@ -36,7 +36,7 @@ const deleteById = (req, res) => {
   }
 };
 const updateById = (req, res) => {
-  // TODO...
+  //TODO...
 };
 const add = (req, res) => {
   // TODO...

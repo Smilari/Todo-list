@@ -9,13 +9,15 @@ const getById = (id) => {
 };
 
 const deleteById = (id) => {
-  return arrayTareas.splice(getById(id),1);
+  console.log(id);
+  return arrayTareas.splice(id-1,1);
 };
 
-const updateById = (id) => {
-  // TODO...
+const updateById = (id, nuevaTarea) => {  
+  //TODO... 
 };
-const add = (ingrediente) => {
+
+const add = (tarea) => {
   // TODO...
 };
 
