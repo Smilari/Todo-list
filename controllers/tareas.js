@@ -35,9 +35,23 @@ const deleteById = (req, res) => {
     });
   }
 };
+
 const updateById = (req, res) => {
-  //TODO...
+  let { id } = req.params;
+  const idINT = parseInt(id);
+
+  const tarea = tareasModel.getById(idINT);
+  
+  if (tarea) {
+    res.json(tareasModel.updateById(idINT, req.body));
+  } else {
+    res.status(404).json({
+      id,
+      encontrado: false,
+    });
+  }
 };
+
 const add = (req, res) => {
   // TODO...
 };

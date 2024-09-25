@@ -12,8 +12,8 @@ const deleteById = (id) => {
   return arrayTareas.splice(arrayTareas.findIndex((tar) => tar._id === id),1);
 };
 
-const updateById = (id, nuevaTarea) => {  
-  //TODO... 
+const updateById = (id, nuevaTarea) => {
+  return arrayTareas.splice(arrayTareas.findIndex((tar) => tar._id === id),1,nuevaTarea);
 };
 
 const add = (tarea) => {
