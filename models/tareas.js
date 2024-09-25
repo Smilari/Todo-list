@@ -9,8 +9,7 @@ const getById = (id) => {
 };
 
 const deleteById = (id) => {
-  console.log(id);
-  return arrayTareas.splice(id-1,1);
+  return arrayTareas.splice(arrayTareas.findIndex((tar) => tar._id === id),1);
 };
 
 const updateById = (id, nuevaTarea) => {  

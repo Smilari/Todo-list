@@ -27,7 +27,7 @@ const deleteById = (req, res) => {
   const tarea = tareasModel.getById(idINT);
 
   if (tarea) {
-    res.json(tareasModel.deleteById(id));
+    res.json(tareasModel.deleteById(idINT));
   } else {
     res.status(404).json({
       id,
