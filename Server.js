@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 
 class Server {
   constructor() {
@@ -24,7 +25,16 @@ class Server {
   }
 
   connectBD() {
-    // TODO...
+    mongoose
+      .connect(process.env.MONGO_URI)
+      .then(() => {
+        console.log("Conectado a la Base de Datos");
+
+        this.app.listen();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 

@@ -1,6 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
+//Al estar declarado aca solo afecta a las rutas de este archivo
 router.use(express.json()); //Middleware para el uso de Json en el metodo updateById
 
 const {
