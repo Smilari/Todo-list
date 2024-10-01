@@ -5,17 +5,17 @@ const router = express.Router();
 router.use(express.json()); //Middleware para el uso de Json en el metodo updateById
 
 const {
-  getAll,
-  getById,
-  deleteById,
-  updateById,
-  add,
-} = require("../controllers/tareas");
+  addTarea,
+  getTareas,
+  getTarea,
+  deleteTarea,
+  updateTarea,
+} = require("../controllers/tareasController");
 
-router.get("/", getAll);
-router.get("/:id", getById);
-router.delete("/:id", deleteById);
-router.put("/:id", updateById);
-router.post("/", add);
+router.get("/", getTareas);
+router.get("/:id", getTarea);
+router.delete("/:id", deleteTarea);
+router.put("/:id", updateTarea);
+router.post("/", addTarea);
 
 module.exports = router;
