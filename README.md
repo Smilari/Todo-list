@@ -2,6 +2,13 @@ Segundo Parcial de Programación III, Informática Aplicada, INSPT
 
 -TODO-List-
 
+Dependencias usadas:
+
+- Express
+- Mongoose
+- Mongoose-sequence
+- Dotenv
+
 Consignas:
 
 ▪ Debe ser una API REST, capaz de retornar datos en formato JSON.
