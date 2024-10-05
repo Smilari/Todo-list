@@ -1,0 +1,36 @@
+### GET /api/tasks
+GET http://localhost:3000/api/tasks
+
+### GET /api/tasks/:id
+GET http://localhost:3000/api/tasks/1
+
+### POST /api/tasks
+POST http://localhost:3000/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Task 1",
+  "description": "Task 1 description",
+  "creationDate": "2023-07-01T00:00:00.000Z",
+  "limitDate": "2023-07-01T00:00:00.000Z",
+  "status": "Pendiente",
+  "priority": 1,
+  "category": "Category 1"
+}
+
+### PATCH /api/tasks/:id
+PATCH http://localhost:3000/api/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Task 1 modified",
+  "description": "Task 1 description modified",
+  "creationDate": "2023-07-01T00:00:00.000Z",
+  "limitDate": "2023-07-01T00:00:00.000Z",
+  "status": "Pendiente",
+  "priority": 1,
+  "category": "Category 1 modified"
+}
+
+### DELETE /api/tasks/:id
+DELETE http://localhost:3000/api/tasks/1

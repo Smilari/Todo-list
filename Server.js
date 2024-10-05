@@ -19,10 +19,16 @@ export default class Server {
   loadMiddlewares () {
     this.app.disable('x-powered-by') // Desactiva el header 'express'
     this.app.use(express.json()) // Parsea el body del request para solicitudes de tipo POST y PUT
+    console.log('Middlewares loaded')
   }
 
   loadRutas () {
     this.app.use('/api/tasks', tasksRouter)
+
+    // Ruta por defecto para cualquier ruta no encontrada
+    this.app.use((req, res) => {
+      res.status(404).json({ message: 'Route not found' })
+    })
   }
 
   connectBD () {
