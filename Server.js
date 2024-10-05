@@ -18,6 +18,7 @@ export default class Server {
 
   loadMiddlewares () {
     this.app.disable('x-powered-by') // Desactiva el header 'express'
+    this.app.use(express.json()) // Parsea el body del request para solicitudes de tipo POST y PUT
   }
 
   loadRutas () {

@@ -1,7 +1,7 @@
-import { TaskModel } from '../models/task.js'
-import { TaskSchema } from '../schemas/tasks.js'
+import { TaskModel } from '../models/TaskModel.js'
+import { TaskSchema } from '../schemas/TaskSchema.js'
 
-export class taskController {
+export class TaskController {
   static async getAll (req, res) {
     const tasks = await TaskModel.getAll()
     res.json(tasks)
