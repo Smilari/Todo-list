@@ -1,4 +1,5 @@
-const TaskModel = require('../models/task.js')
+import { TaskModel } from '../models/task.js'
+import { TaskSchema } from '../schemas/tasks.js'
 
 export class taskController {
   static async getAll (req, res) {
@@ -18,8 +19,8 @@ export class taskController {
   }
 
   static async create (req, res) {
-    const task = new TaskModel(req.body)
-    const newTask = await task.save()
+    const task = new TaskSchema(req.body)()
+    const newTask = await task.create()
     res.json(newTask)
   }
 

@@ -6,7 +6,7 @@ const AutoIncrement = mongoose_sequence(mongoose)
 
 const Schema = mongoose.Schema
 
-export const taskSchema = new Schema(
+const task = new Schema(
   {
     _id: {
       type: Number
@@ -49,4 +49,6 @@ export const taskSchema = new Schema(
 )
 
 // AutoIncrement al campo `id`
-taskSchema.plugin(AutoIncrement, { inc_field: '_id' })
+task.plugin(AutoIncrement, { inc_field: '_id' })
+
+export const TaskSchema = mongoose.model('Task', task)

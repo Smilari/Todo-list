@@ -1,54 +1,37 @@
-import mongoose from 'mongoose'
-// eslint-disable-next-line camelcase
-import mongoose_sequence from 'mongoose-sequence'
+import { TaskSchema } from '../schemas/tasks.js'
 
-const AutoIncrement = mongoose_sequence(mongoose)
-
-const Schema = mongoose.Schema
-
-const tareaSchema = new Schema(
-  {
-    _id: {
-      type: Number
-    },
-    titulo: {
-      type: String,
-      required: true
-    },
-    descripcion: {
-      type: String,
-      required: false
-    },
-    fechaCreacion: {
-      type: Date,
-      default: Date.now,
-      required: true
-    },
-    fechaLimite: {
-      type: Date,
-      required: false
-    },
-    estado: {
-      type: String,
-      enum: ['Pendiente', 'En Progreso', 'Terminado'],
-      required: true
-    },
-    prioridad: {
-      type: Number,
-      required: true
-    },
-    categoria: {
-      type: String,
-      required: false
-    }
-  },
-  {
-    versionKey: false, // Esto oculta el campo __v
-    _id: false // Esto oculta el campo _id (ObjectId de la BD)
+export class TaskModel {
+  static async getAll () {
+    return TaskSchema.find({})
   }
-)
 
-// AutoIncrement al campo `id`
-tareaSchema.plugin(AutoIncrement, { inc_field: '_id' })
+  static async getById ({ id }) {
+    const objectId = new ObjectId(id)
+    return db.findOne({ _id: objectId })
+  }
 
-module.exports = mongoose.model('Tarea', tareaSchema)
+  static async create ({ input }) {
+    const { insertedId } = await db.insertOne(input)
+
+    return {
+      id: insertedId,
+      ...input
+    }
+  }
+
+  static async delete ({ id }) {
+    const objectId = new ObjectId(id)
+    const { deletedCount } = await db.deleteOne({ _id: objectId })
+    return deletedCount > 0
+  }
+
+  static async update ({ id, input }) {
+    const objectId = new ObjectId(id)
+
+    const { ok, value } = await db.findOneAndUpdate({ _id: objectId }, { $set: input }, { returnNewDocument: true })
+
+    if (!ok) return false
+
+    return value
+  }
+}

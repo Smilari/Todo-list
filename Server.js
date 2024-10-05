@@ -8,7 +8,6 @@ export default class Server {
     this.app = express()
     this.loadMiddlewares()
     this.loadRutas()
-    this.connectBD()
   }
 
   listen () {
@@ -18,7 +17,7 @@ export default class Server {
   }
 
   loadMiddlewares () {
-    this.app.disable('x-powered-by')
+    this.app.disable('x-powered-by') // Desactiva el header 'express'
   }
 
   loadRutas () {
@@ -30,8 +29,6 @@ export default class Server {
       .connect(process.env.MONGO_URI)
       .then(() => {
         console.log('Connected to MongoDB')
-
-        this.app.listen()
       })
       .catch((err) => {
         console.log(err)
