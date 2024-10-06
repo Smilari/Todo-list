@@ -23,6 +23,7 @@ export default class Server {
   }
 
   loadRutas () {
+    // Ruta para las tareas de la API
     this.app.use('/api/tasks', tasksRouter)
 
     // Ruta por defecto para cualquier ruta no encontrada
@@ -37,7 +38,7 @@ export default class Server {
       .then(() => {
         console.log('Connected to MongoDB')
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err)
       })
   }

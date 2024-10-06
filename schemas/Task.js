@@ -4,9 +4,7 @@ import mongoose_sequence from 'mongoose-sequence'
 
 const AutoIncrement = mongoose_sequence(mongoose)
 
-const Schema = mongoose.Schema
-
-const task = new Schema(
+const taskSchema = new mongoose.Schema(
   {
     _id: {
       type: Number
@@ -19,12 +17,7 @@ const task = new Schema(
       type: String,
       required: false
     },
-    creationDate: {
-      type: Date,
-      default: Date.now,
-      required: true
-    },
-    limitDate: {
+    dueDate: {
       type: Date,
       required: false
     },
@@ -44,11 +37,12 @@ const task = new Schema(
   },
   {
     versionKey: false, // Esto oculta el campo __v
-    _id: false // Esto oculta el campo _id (ObjectId de la BD)
+    _id: false, // Esto oculta el campo _id (ObjectId de la BD)
+    timestamps: true
   }
 )
 
 // AutoIncrement al campo `id`
-task.plugin(AutoIncrement, { inc_field: '_id' })
+taskSchema.plugin(AutoIncrement, { inc_field: '_id' })
 
-export const TaskSchema = mongoose.model('Task', task)
+export const Task = mongoose.model('Task', taskSchema)

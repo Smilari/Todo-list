@@ -1,37 +1,24 @@
-import { TaskSchema } from '../schemas/TaskSchema.js'
+import { Task } from '../schemas/Task.js'
 
 export class TaskModel {
   static async getAll () {
-    return TaskSchema.find({})
+    return Task.find({})
   }
 
   static async getById ({ id }) {
-    const objectId = new ObjectId(id)
-    return db.findOne({ _id: objectId })
+    return Task.findById(id)
   }
 
   static async create ({ input }) {
-    const { insertedId } = await db.insertOne(input)
-
-    return {
-      id: insertedId,
-      ...input
-    }
+    const task = new Task(input)
+    return task.save()
   }
 
   static async delete ({ id }) {
-    const objectId = new ObjectId(id)
-    const { deletedCount } = await db.deleteOne({ _id: objectId })
-    return deletedCount > 0
+    return Task.findByIdAndDelete(id)
   }
 
   static async update ({ id, input }) {
-    const objectId = new ObjectId(id)
-
-    const { ok, value } = await db.findOneAndUpdate({ _id: objectId }, { $set: input }, { returnNewDocument: true })
-
-    if (!ok) return false
-
-    return value
+    return Task.findByIdAndUpdate(id, input, { new: true })
   }
 }

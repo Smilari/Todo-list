@@ -9,27 +9,20 @@ POST http://localhost:3000/api/tasks
 Content-Type: application/json
 
 {
-  "title": "Task 1",
-  "description": "Task 1 description",
-  "creationDate": "2023-07-01T00:00:00.000Z",
+  "title": "Task 2",
+  "description": "Task 2 description",
   "limitDate": "2023-07-01T00:00:00.000Z",
   "status": "Pendiente",
-  "priority": 1,
+  "priority": 2,
   "category": "Category 1"
 }
 
 ### PATCH /api/tasks/:id
-PATCH http://localhost:3000/api/tasks/1
+PATCH http://localhost:3000/api/tasks/2
 Content-Type: application/json
 
 {
-  "title": "Task 1 modified",
-  "description": "Task 1 description modified",
-  "creationDate": "2023-07-01T00:00:00.000Z",
-  "limitDate": "2023-07-01T00:00:00.000Z",
-  "status": "Pendiente",
-  "priority": 1,
-  "category": "Category 1 modified"
+  "description": "Description updated"
 }
 
 ### DELETE /api/tasks/:id
