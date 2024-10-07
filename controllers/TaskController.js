@@ -14,7 +14,7 @@ export class TaskController {
     try {
       const task = await TaskModel.getById({ id: req.params.id })
       if (!task) {
-        res.status(404).json({ message: 'Tarea no encontrada' })
+        return res.status(404).json({ message: 'Tarea no encontrada' })
       }
       res.json(task)
     } catch (error) {
@@ -35,7 +35,7 @@ export class TaskController {
     try {
       const task = await TaskModel.delete({ id: req.params.id })
       if (!task) {
-        res.status(404).json({ message: 'Tarea no encontrada' })
+        return res.status(404).json({ message: 'Tarea no encontrada' })
       }
       res.json(task)
     } catch (error) {
@@ -47,7 +47,7 @@ export class TaskController {
     try {
       const task = await TaskModel.update({ id: req.params.id, input: req.body })
       if (!task) {
-        res.status(404).json({ message: 'Tarea no encontrada' })
+        return res.status(404).json({ message: 'Tarea no encontrada' })
       }
       res.json(task)
     } catch (error) {
