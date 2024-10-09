@@ -1,4 +1,5 @@
 import { User } from '../schemas/User.js'
+import { ErrorHandler } from "../helpers/errorHandler.js";
 import bcrypt from 'bcrypt'
 
 export class AuthModel {
@@ -14,10 +15,10 @@ export class AuthModel {
   static async login ({ username, password }) {
     const user = await User.findOne({ username })
     if (!user) {
-      throw new Error('Usuario no encontrado')
+      throw new ErrorHandler(401, 'Usuario no encontrado')
     }
     const isPasswordValid = await bcrypt.compare(password, user.password)
-    if (!isPasswordValid) throw new Error('Contraseña incorrecta')
+    if (!isPasswordValid) throw new ErrorHandler(401, 'Contraseña incorrecta')
 
     return {
       id: user.id,
