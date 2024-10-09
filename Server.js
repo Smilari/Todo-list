@@ -3,23 +3,23 @@ import mongoose from "mongoose";
 import { tasksRouter } from "./routes/tasks.js";
 import { authRouter } from "./routes/auth.js";
 import { MONGO_URI, PORT } from "./config.js";
-import { ErrorHandler } from "./helpers/errorHandler.js";
+import { ErrorHandler } from "./helpers/ErrorHandler.js";
 
 export default class Server {
-  constructor() {
+  constructor () {
     this.port = PORT;
     this.app = express();
     this.loadMiddlewares();
     this.loadRoutes();
   }
 
-  listen() {
+  listen () {
     this.app.listen(this.port, () => {
       console.log(`Server listening on port ${this.port}`);
     });
   }
 
-  loadMiddlewares() {
+  loadMiddlewares () {
     this.app.disable("x-powered-by"); // Desactiva el header 'express'
     this.app.use(express.json()); // Parsea el body del request para solicitudes de tipo POST y PUT
 
@@ -37,7 +37,7 @@ export default class Server {
     console.log("Middlewares loaded");
   }
 
-  loadRoutes() {
+  loadRoutes () {
     // Ruta para las tareas de la API
     this.app.use("/api/tasks", tasksRouter);
 
@@ -46,15 +46,12 @@ export default class Server {
     console.log("Routes loaded");
   }
 
-  connectBD() {
-    mongoose
-      .connect(MONGO_URI)
-      .then(() => {
-        console.log("Connected to MongoDB");
-      })
-      .catch((err) => {
-        console.log(err);
-        throw new ErrorHandler(500, "Error al conectar a la base de datos");
-      });
+  connectBD () {
+    mongoose.connect(MONGO_URI).then(() => {
+      console.log("Connected to MongoDB");
+    }).catch((err) => {
+      console.log(err);
+      throw new ErrorHandler(500, "Error al conectar a la base de datos");
+    });
   }
 }

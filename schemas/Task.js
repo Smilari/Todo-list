@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema(
   {
@@ -16,7 +16,7 @@ const taskSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Pendiente', 'En Progreso', 'Terminado'],
+      enum: ["Pendiente", "En Progreso", "Terminado"],
       required: true,
     },
     priority: {
@@ -32,6 +32,6 @@ const taskSchema = new mongoose.Schema(
     versionKey: false, // Esto oculta el campo __v
     timestamps: true,
   },
-)
+);
 
-export const Task = mongoose.model('Task', taskSchema)
+export const Task = mongoose.model("Task", taskSchema);

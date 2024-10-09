@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 // eslint-disable-next-line camelcase
 
 const userSchema = new mongoose.Schema(
@@ -17,29 +17,29 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ['admin', 'user'],
+      enum: ["admin", "user"],
     },
   },
   {
     versionKey: false, // Esto oculta el campo __v
     timestamps: true,
   },
-)
+);
 
 // Middleware para encriptar la contraseña antes de guardarla
-userSchema.pre('save', async function (next) {
-  const user = this
+userSchema.pre("save", async function (next) {
+  const user = this;
 
   // Si la contraseña no ha sido modificada, no necesitamos encriptarla de nuevo
-  if (!user.isModified('password')) return next()
+  if (!user.isModified("password")) return next();
 
   // Encripta la contraseña antes de guardar el usuario
   try {
-    user.password = await bcrypt.hash(user.password, 10)
-    next()
+    user.password = await bcrypt.hash(user.password, 10);
+    next();
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-export const User = mongoose.model('User', userSchema)
+export const User = mongoose.model("User", userSchema);

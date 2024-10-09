@@ -1,11 +1,11 @@
-class ErrorHandler extends Error {
-  constructor(statusCode, message) {
+export class ErrorHandler extends Error {
+  constructor (statusCode, message) {
     super();
     this.statusCode = statusCode;
     this.message = message;
   }
 
-  static handleError(err, res) {
+  static handleError (err, res) {
     const { statusCode, message } = err;
     res.status(statusCode || 500).json({
       status: "error",
@@ -14,5 +14,3 @@ class ErrorHandler extends Error {
     });
   }
 }
-
-export { ErrorHandler };

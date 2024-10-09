@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ErrorHandler } from "./helpers/errorHandler.js";
+import { ErrorHandler } from "./ErrorHandler.js";
 
 export const generarJWT = (user) => {
   return new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ export const generarJWT = (user) => {
         } else {
           resolve(token);
         }
-      }
+      },
     );
   });
 };
