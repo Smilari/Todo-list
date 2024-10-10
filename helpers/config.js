@@ -6,4 +6,5 @@ export const {
   PORT = 3000,
   MONGO_URI,
   SECRETORPRIVATEKEY = "secreto",
+  LANGUAGE = "en",
 } = process.env;

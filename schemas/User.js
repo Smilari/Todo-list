@@ -1,23 +1,27 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-// eslint-disable-next-line camelcase
+import { messagesByLang as msg } from "../helpers/messages.js";
 
 const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: true,
+      required: [true, msg.requiredField()],
+      minlength: [4, msg.minLength(4)],
+      maxlength: [20, msg.maxLength(20)],
       unique: true,
+      trim: true, // Elimina espacios en blanco al principio y final
     },
     password: {
       type: String,
-      required: true,
-      minlength: 8,
+      required: [true, msg.requiredField()],
+      minlength: [6, msg.minLength(6)],
     },
     role: {
       type: String,
-      required: true,
+      required: [true, msg.requiredField()],
       enum: ["admin", "user"],
+      default: "user",
     },
   },
   {

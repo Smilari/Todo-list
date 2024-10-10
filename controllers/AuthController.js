@@ -1,15 +1,13 @@
 import { AuthModel } from "../models/AuthModel.js";
-import { ErrorHandler } from "../helpers/ErrorHandler.js";
+import { handleError } from "../helpers/ErrorHandler.js";
 
 export class AuthController {
   static async register (req, res) {
-    const { username, password, role } = req.body;
     try {
-      const user = await AuthModel.register({ username, password, role });
+      const user = await AuthModel.register(req.body);
       res.status(201).json(user);
-    } catch (error) {
-      res.status(500).
-        json(new ErrorHandler(500, "Error al registrar el usuario"));
+    } catch (err) {
+      handleError(err, res);
     }
   }
 
@@ -18,9 +16,17 @@ export class AuthController {
     try {
       const user = await AuthModel.login({ username, password });
       res.json(user);
-    } catch (error) {
-      res.status(500).
-        json(new ErrorHandler(500, "Error al autenticar el usuario"));
+    } catch (err) {
+      handleError(err, res);
+    }
+  }
+
+  static async getAll (req, res) {
+    try {
+      const users = await AuthModel.getAll();
+      res.json(users);
+    } catch (err) {
+      handleError(err, res);
     }
   }
 }

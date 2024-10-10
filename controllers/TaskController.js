@@ -1,5 +1,5 @@
 import { TaskModel } from "../models/TaskModel.js";
-import { ErrorHandler } from "../helpers/ErrorHandler.js";
+import { handleError } from "../helpers/ErrorHandler.js";
 
 export class TaskController {
   static async getAll (req, res) {
@@ -7,8 +7,7 @@ export class TaskController {
       const tasks = await TaskModel.getAll();
       res.json(tasks);
     } catch (error) {
-      res.status(500).
-        json(new ErrorHandler(500, "Error al obtener las tareas"));
+      handleError(error, res);
     }
   }
 
@@ -21,7 +20,7 @@ export class TaskController {
       }
       res.json(task);
     } catch (error) {
-      res.status(500).json(new ErrorHandler(500, "Error al obtener la tarea"));
+      handleError(error, res);
     }
   }
 
@@ -30,7 +29,7 @@ export class TaskController {
       const task = await TaskModel.create({ input: req.body });
       res.status(201).json(task);
     } catch (error) {
-      res.status(500).json(new ErrorHandler(500, "Error al crear la tarea"));
+      handleError(error, res);
     }
   }
 
@@ -38,12 +37,11 @@ export class TaskController {
     try {
       const task = await TaskModel.delete({ id: req.params.id });
       if (!task) {
-        return res.status(404).
-          json(new ErrorHandler(404, "Tarea no encontrada"));
+        // TODO: Revisar si es necesario devolver un error 404
       }
       res.status(204).send(); // No hay contenido que devolver después de la eliminación
     } catch (error) {
-      res.status(500).json(new ErrorHandler(500, "Error al eliminar la tarea"));
+      handleError(error, res, "");
     }
   }
 

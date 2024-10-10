@@ -1,5 +1,6 @@
 import { User } from "../schemas/User.js";
-import { ErrorHandler } from "../helpers/ErrorHandler.js";
+import { ValidationError } from "../helpers/ErrorHandler.js";
+import { messagesByLang as msg } from "../helpers/messages.js";
 import bcrypt from "bcrypt";
 
 export class AuthModel {
@@ -14,16 +15,19 @@ export class AuthModel {
 
   static async login ({ username, password }) {
     const user = await User.findOne({ username });
-    if (!user) {
-      throw new ErrorHandler(401, "Usuario no encontrado");
-    }
+    if (!user) throw new ValidationError(msg.validation);
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) throw new ErrorHandler(401, "Contraseña incorrecta");
+    if (!isPasswordValid) throw new ValidationError(msg.validation);
 
     return {
       id: user.id,
       username: user.username,
       role: user.role,
     };
+  }
+
+  static async getAll () {
+    return User.find({});
   }
 }
