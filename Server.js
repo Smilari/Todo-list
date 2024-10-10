@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import { tasksRouter } from "./routes/tasks.js";
 import { authRouter } from "./routes/auth.js";
 import { MONGO_URI, PORT } from "./helpers/config.js";
-import { handleError } from "./helpers/ErrorHandler.js";
+import { handleError, NotFound } from "./helpers/ErrorHandler.js";
+import { messagesByLang as msg } from "./helpers/messages.js";
 
 export default class Server {
   constructor () {
@@ -41,7 +42,8 @@ export default class Server {
 
     // Ruta por defecto para cualquier ruta no encontrada
     this.app.use((req, res) => {
-      res.status(404).json({ message: "Route not found" });
+      const routeNotFound = new NotFound(msg.routeNotFound);
+      handleError(routeNotFound, res);
     });
   }
 

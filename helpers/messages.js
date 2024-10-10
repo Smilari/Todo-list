@@ -19,6 +19,11 @@ const messages = {
     validation: "Username/Password is not valid",
     internalError: "Internal Server Error",
 
+    // Routes messages
+    routeNotFound: "Route not found",
+
+    // Tasks messages
+    taskNotFound: "Task not found",
   },
   es: {
     // Mensajes de usuario
@@ -38,6 +43,11 @@ const messages = {
     validation: "Usuario/Contraseña no válidos",
     internalError: "Error de servidor interno",
 
+    // Mensajes de las rutas
+    routeNotFound: "Ruta no encontrada",
+
+    // Mensajes de las tareas
+    taskNotFound: "Tarea no encontrada",
   },
 };
 

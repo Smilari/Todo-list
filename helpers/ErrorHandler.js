@@ -26,3 +26,4 @@ export const createErrorFactory = function (name, statusCode) {
 };
 
 export const ValidationError = createErrorFactory("ValidationError", 400);
+export const NotFound = createErrorFactory("NotFound", 404);

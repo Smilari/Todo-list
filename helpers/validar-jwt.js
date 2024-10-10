@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import { ErrorHandler } from "./ErrorHandler.js";
+import { handleError } from "./ErrorHandler.js";
+import { messagesByLang as msg } from "./helpers/messages.js";
 
 export const generarJWT = (user) => {
   return new Promise((resolve, reject) => {
@@ -16,7 +17,7 @@ export const generarJWT = (user) => {
       (err, token) => {
         if (err) {
           console.log(err);
-          reject(new ErrorHandler(500, "Error al generar el token"));
+          reject(handleError(err,msg.internalError));
         } else {
           resolve(token);
         }
