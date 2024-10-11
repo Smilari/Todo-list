@@ -1,10 +1,14 @@
 import mongoose from "mongoose";
+import { messagesByLang as msg } from "../helpers/messages.js";
 
 const taskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, msg.requiredField()],
+      minlength: [2, msg.minLength(2)],
+      maxlength: [20, msg.maxLength(20)],
+      trim: true,
     },
     description: {
       type: String,
@@ -17,11 +21,11 @@ const taskSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Pendiente", "En Progreso", "Terminado"],
-      required: true,
+      required: [true, msg.requiredField()],
     },
     priority: {
       type: Number,
-      required: true,
+      required: [true, msg.requiredField()],
     },
     category: {
       type: String,

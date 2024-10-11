@@ -1,74 +1,59 @@
 import { TaskModel } from "../models/TaskModel.js";
-import {
-  handleError,
-  ValidationError,
-  NotFound,
-} from "../helpers/ErrorHandler.js";
+import { handleError, NotFound } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 
 export class TaskController {
-  static async getAll(req, res) {
+  static async getAll (req, res) {
     try {
       const tasks = await TaskModel.getAll();
       res.json(tasks);
-    } catch (error) {
-      handleError(error, res);
+    } catch (err) {
+      handleError(err, res);
     }
   }
 
-  static async getById(req, res) {
+  static async getById (req, res) {
     try {
       const task = await TaskModel.getById({ id: req.params.id });
-      if (!task) {
-        const taskNotFound = new NotFound(msg.taskNotFound);
-        return handleError(taskNotFound, res);
-      }
+      if (!task) return handleError(new NotFound(msg.taskNotFound), res);
+
       res.json(task);
-    } catch (error) {
-      handleError(error, res);
+    } catch (err) {
+      handleError(err, res);
     }
   }
 
-  static async create(req, res) {
+  static async create (req, res) {
     try {
       const task = await TaskModel.create({ input: req.body });
       res.status(201).json(task);
-    } catch (error) {
-      handleError(error, res);
+    } catch (err) {
+      handleError(err, res);
     }
   }
 
-  static async delete(req, res) {
+  static async delete (req, res) {
     try {
       const task = await TaskModel.delete({ id: req.params.id });
-      if (!task) {
-        const taskNotFound = new NotFound(msg.taskNotFound);
-        return handleError(taskNotFound, res);
-      }
-      res.status(204).send(); // No hay contenido que devolver después de la eliminación
-    } catch (error) {
-      handleError(error, res, "");
+      if (!task) return handleError(new NotFound(msg.taskNotFound), res);
+
+      res.status(204).send();
+    } catch (err) {
+      handleError(err, res);
     }
   }
 
-  static async update(req, res) {
+  static async update (req, res) {
     try {
       const task = await TaskModel.update({
         id: req.params.id,
         input: req.body,
       });
-      if (!task) {
-        /*const taskNotFound = new NotFound(msg.taskNotFound);
-        return handleError(taskNotFound, res);*/
-        const validationError = new ValidationError(msg.internalError);
-        return handleError(validationError, res);
-      }
+      if (!task) return handleError(new NotFound(msg.taskNotFound), res);
+
       res.json(task);
-    } catch (error) {
-      /*const validationError = new ValidationError(msg.internalError);
-      return handleError(validationError, res);*/
-      const taskNotFound = new NotFound(msg.taskNotFound);
-      return handleError(taskNotFound, res);
+    } catch (err) {
+      return handleError(err, res);
     }
   }
 }

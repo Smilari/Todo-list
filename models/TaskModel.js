@@ -19,6 +19,7 @@ export class TaskModel {
   }
 
   static async update ({ id, input }) {
-    return Task.findByIdAndUpdate(id, input, { new: true }); // new: true devuelve el objeto actualizado
+    return Task.findByIdAndUpdate(id, input,
+      { new: true, runValidators: true }); // new: true devuelve el objeto actualizado
   }
 }

@@ -7,10 +7,10 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: [true, msg.requiredField()],
-      minlength: [4, msg.minLength(4)],
+      minlength: [3, msg.minLength(3)],
       maxlength: [20, msg.maxLength(20)],
       unique: true,
-      trim: true, // Elimina espacios en blanco al principio y final
+      trim: true,
     },
     password: {
       type: String,

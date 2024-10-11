@@ -3,6 +3,7 @@ import { LANGUAGE } from "./config.js";
 const messages = {
   en: {
     // User messages
+    validation: "Username/Password is not valid",
     tokenNotValid: "Token is not valid",
     tokenNotFound: "Token not found",
 
@@ -16,7 +17,6 @@ const messages = {
     maxLength (maxLength) {
       return `The field must be at most ${maxLength} characters long`;
     },
-    validation: "Username/Password is not valid",
     internalError: "Internal Server Error",
 
     // Routes messages
@@ -27,6 +27,7 @@ const messages = {
   },
   es: {
     // Mensajes de usuario
+    validation: "Usuario/Contraseña no válidos",
     tokenNotValid: "El token no es válido",
     tokenNotFound: "Token no encontrado",
 
@@ -40,7 +41,6 @@ const messages = {
     maxLength (maxLength) {
       return `El campo debe tener como máximo ${maxLength} caracteres`;
     },
-    validation: "Usuario/Contraseña no válidos",
     internalError: "Error de servidor interno",
 
     // Mensajes de las rutas
