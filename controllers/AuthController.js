@@ -15,8 +15,8 @@ export class AuthController {
   static async login (req, res) {
     const { username, password } = req.body;
     try {
-      const user = await AuthModel.login({ username, password });
-      res.json(user);
+      const { user, token } = await AuthModel.login({ username, password });
+      res.json({ user, token });
     } catch (err) {
       handleError(err, res);
     }
