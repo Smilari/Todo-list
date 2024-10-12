@@ -5,6 +5,9 @@ import { authRouter } from "./routes/auth.js";
 import { MONGO_URI, PORT } from "./helpers/config.js";
 import { handleError, NotFound } from "./helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "./helpers/messages.js";
+import helmet from "helmet";
+import cors from "cors";
+import morgan from "morgan";
 
 export default class Server {
   constructor () {
@@ -21,8 +24,10 @@ export default class Server {
   }
 
   loadMiddlewares () {
-    this.app.disable("x-powered-by"); // Desactiva el header 'express'
     this.app.use(express.json()); // Parsea el body del request para solicitudes de tipo POST y PUT
+    this.app.use(helmet()); // Protege contra ataques XSS y CSRF
+    this.app.use(cors()); // Permite la comunicación entre dominios externos
+    this.app.use(morgan("dev")); // Registra las peticiones en el servidor
 
     // Middleware global para manejar errores
     this.app.use((err, req, res, next) => {
@@ -42,8 +47,7 @@ export default class Server {
 
     // Ruta por defecto para cualquier ruta no encontrada
     this.app.use((req, res) => {
-      const routeNotFound = new NotFound(msg.routeNotFound);
-      handleError(routeNotFound, res);
+      handleError(new NotFound(msg.routeNotFound), res);
     });
   }
 
