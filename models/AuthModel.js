@@ -1,7 +1,7 @@
 import { User } from "../schemas/User.js";
 import { ValidationError } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
-import { generarJWT } from "../helpers/generarJWT.js";
+import { generateJWT } from "../helpers/generateJWT.js";
 import bcrypt from "bcrypt";
 import { EXPIRES_IN } from "../helpers/config.js";
 
@@ -12,7 +12,16 @@ export class AuthModel {
       password,
       role,
     });
-    return user.save();
+    await user.save();
+    const token = await generateJWT(user, EXPIRES_IN);
+    console.log(token);
+    return {
+      user: {
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      }, token,
+    };
   }
 
   static async login ({ username, password }) {
@@ -22,7 +31,7 @@ export class AuthModel {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) throw new ValidationError(msg.validation);
 
-    const token = await generarJWT(user, EXPIRES_IN);
+    const token = await generateJWT(user, EXPIRES_IN);
     return {
       user: {
         id: user.id,

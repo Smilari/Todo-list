@@ -4,6 +4,7 @@ const messages = {
   en: {
     // User messages
     validation: "Username/Password is not valid",
+    unauthorized: "Access denied, insufficient permissions",
     tokenNotValid: "Token is not valid",
     tokenNotFound: "Token not found",
 
@@ -28,6 +29,7 @@ const messages = {
   es: {
     // Mensajes de usuario
     validation: "Usuario/Contraseña no válidos",
+    unauthorized: "Acceso denegado, permisos insuficientes",
     tokenNotValid: "El token no es válido",
     tokenNotFound: "Token no encontrado",
 

@@ -2,14 +2,12 @@ import { response, request } from "express";
 import jwt from "jsonwebtoken";
 import { AuthModel } from "../models/AuthModel.js";
 import {
-  handleError,
-  NotFound,
-  ValidationError,
+  handleError, NotFound, Unauthorized, ValidationError,
 } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 import { PRIVATE_KEY } from "../helpers/config.js";
 
-export const validarJwt = async (req = request, res = response, next) => {
+export const validateJWT = async (req = request, res = response, next) => {
   const token = req.header("x-token");
 
   if (!token) return handleError(new NotFound(msg.tokenNotFound), res);
@@ -25,30 +23,10 @@ export const validarJwt = async (req = request, res = response, next) => {
   }
 };
 
-/*const validarRol = (req, resp, next) => {
-  // ESTO NO VA...
-  const userEsperado = {
-    _id: "idDeMentiritas",
-    nombre: "juan",
-    rol: "pichi",
-    pass: "1234",
-  };
-  // buscar usuario "juan"
+export const validateAdmin = async (req = request, res = response, next) => {
+  const { user } = req;
+  if (user.role !== "admin") return handleError(
+    new Unauthorized(msg.unauthorized), res);
 
-  if (req.nombreDeUsuario === userEsperado.nombre) {
-    if (userEsperado.rol === "ADMIN") {
-      next();
-    } else {
-      resp.status(401).json({
-        msg: "afueraaaa, sos pichi, no sos admin",
-      });
-    }
-  } else {
-    resp.status(401).json({
-      msg: "afueraaaa",
-    });
-  }
-
-  console.log(req.nombreDeUsuario);
   next();
-};*/
+};

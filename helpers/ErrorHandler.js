@@ -6,7 +6,7 @@ export const handleError = ((err, res) => {
     statusCode = 500,
     message = msg.internalError,
   } = err;
-  res.status(statusCode).json({
+  return res.status(statusCode).json({
     name,
     status: "ERROR",
     statusCode,
@@ -27,3 +27,4 @@ export const createErrorFactory = function (name, statusCode) {
 
 export const ValidationError = createErrorFactory("ValidationError", 400);
 export const NotFound = createErrorFactory("NotFound", 404);
+export const Unauthorized = createErrorFactory("Unauthorized", 401);

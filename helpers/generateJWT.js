@@ -3,7 +3,7 @@ import { handleError } from "./ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 import { PRIVATE_KEY } from "./config.js";
 
-export const generarJWT = (user, time = "10s") => {
+export const generateJWT = (user, time = "10s") => {
   return new Promise((resolve, reject) => {
     const payload = {
       id: user.id, username: user.username, role: user.role,
