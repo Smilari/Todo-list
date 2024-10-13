@@ -23,11 +23,17 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "user"],
       default: "user",
     },
+    tasks: [
+      {
+        type: mongoose.Schema.Types.ObjectId, // Relacionamos cada tarea con su ObjectId
+        ref: "Task", // Hace referencia al modelo de Tareas
+      },
+    ],
   },
   {
     versionKey: false, // Esto oculta el campo __v
     timestamps: true,
-  },
+  }
 );
 
 // Middleware para encriptar la contraseña antes de guardarla

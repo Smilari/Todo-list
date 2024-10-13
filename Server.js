@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { tasksRouter } from "./routes/tasks.js";
 import { authRouter } from "./routes/auth.js";
+import { userRouter } from "./routes/user.js";
 import { MONGO_URI, PORT } from "./helpers/config.js";
 import { handleError, NotFound } from "./helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "./helpers/messages.js";
@@ -43,6 +44,9 @@ export default class Server {
 
     // Ruta para la autenticación de usuarios
     this.app.use("/api", authRouter);
+
+    // Ruta para la gestión de usuarios
+    this.app.use("/api/users", userRouter);
     console.log("Routes loaded");
 
     // Ruta por defecto para cualquier ruta no encontrada

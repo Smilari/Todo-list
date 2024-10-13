@@ -22,12 +22,12 @@ export class AuthController {
     }
   }
 
-  static async getAll (req, res) {
+  /*static async getAll (req, res) {
     try {
       const users = await AuthModel.getAll();
       res.json(users);
     } catch (err) {
       handleError(err, res);
     }
-  }
+  }*/
 }

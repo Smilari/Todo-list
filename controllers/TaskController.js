@@ -16,7 +16,6 @@ export class TaskController {
     try {
       const task = await TaskModel.getById({ id: req.params.id });
       if (!task) return handleError(new NotFound(msg.taskNotFound), res);
-
       res.json(task);
     } catch (err) {
       handleError(err, res);

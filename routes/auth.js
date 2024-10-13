@@ -8,5 +8,5 @@ authRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
 authRouter.post("/login", AuthController.login);
 authRouter.post("/register", AuthController.register);
-authRouter.get("/getAll", [validateJWT, validateAdmin], AuthController.getAll);
+//authRouter.get("/getAll", [validateJWT, validateAdmin], AuthController.getAll);
 // authRouter.post('/logout', AuthController.logout);
