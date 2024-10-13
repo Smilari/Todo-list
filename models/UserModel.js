@@ -12,4 +12,18 @@ export class UserModel {
     if (!user) throw new ValidationError(msg.validation);
     return user;
   }
+
+  static async create(input) {
+    const user = new User(input);
+    return user.save();
+  }
+
+  static async delete(id) {
+    return User.findByIdAndDelete(id);
+  }
+
+  static async update({ id, input }) {
+    return User.findByIdAndUpdate(id, input,
+      { new: true, runValidators: true }); // new: true devuelve el objeto actualizado
+  }
 }
