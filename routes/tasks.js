@@ -5,8 +5,8 @@ export const tasksRouter = Router();
 
 tasksRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
-tasksRouter.get("/getAll", TaskController.getAll);
-tasksRouter.get("/getById/:id", TaskController.getById);
-tasksRouter.post("/create", TaskController.create);
-tasksRouter.delete("/delete/:id", TaskController.delete);
-tasksRouter.patch("/update/:id", TaskController.update);
+tasksRouter.get("/", TaskController.getAll);
+tasksRouter.get("/:id", TaskController.getById);
+tasksRouter.post("/", TaskController.create);
+tasksRouter.delete("/:id", TaskController.delete);
+tasksRouter.patch("/:id", TaskController.update);

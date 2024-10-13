@@ -1,6 +1,6 @@
 import { response, request } from "express";
 import jwt from "jsonwebtoken";
-import { UserModel } from "../models/UserModel.js";
+import { AdminModel } from "../models/AdminModel.js";
 import {
   handleError, NotFound, Unauthorized, ValidationError,
 } from "../helpers/ErrorHandler.js";
@@ -14,7 +14,7 @@ export const validateJWT = async (req = request, res = response, next) => {
 
   try {
     const { id } = jwt.verify(token, PRIVATE_KEY);
-    const user = await UserModel.getById(id);
+    const user = await AdminModel.getById(id);
     if (!user) throw new ValidationError(msg.tokenNotValid);
     req.user = user;
     next();

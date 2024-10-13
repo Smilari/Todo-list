@@ -40,14 +40,4 @@ export class AuthModel {
       }, token,
     };
   }
-
-  /*static async getAll () {
-    return User.find({});
-  }
-
-  static async getById (id) {
-    const user = await User.findById(id);
-    if (!user) throw new ValidationError(msg.validation);
-    return user;
-  }*/
 }
