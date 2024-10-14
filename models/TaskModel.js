@@ -14,12 +14,12 @@ export class TaskModel {
     return task.save();
   }
 
-  static async delete ({ id }) {
-    return Task.findByIdAndDelete(id);
-  }
-
   static async update ({ id, input }) {
     return Task.findByIdAndUpdate(id, input,
       { new: true, runValidators: true }); // new: true devuelve el objeto actualizado
+  }
+
+  static async delete ({ id }) {
+    return Task.findByIdAndDelete(id);
   }
 }

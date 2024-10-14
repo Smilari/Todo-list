@@ -7,6 +7,7 @@ const messages = {
     unauthorized: "Access denied, insufficient permissions",
     tokenNotValid: "Token is not valid",
     tokenNotFound: "Token not found",
+    userNotFound: "User not found",
 
     // General messages
     requiredField () {
@@ -32,6 +33,7 @@ const messages = {
     unauthorized: "Acceso denegado, permisos insuficientes",
     tokenNotValid: "El token no es válido",
     tokenNotFound: "Token no encontrado",
+    userNotFound: "Usuario no encontrado",
 
     // Mensajes generales
     requiredField () {

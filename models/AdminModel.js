@@ -1,29 +1,25 @@
 import { User } from "../schemas/User.js";
-import { ValidationError } from "../helpers/ErrorHandler.js";
-import { messagesByLang as msg } from "../helpers/messages.js";
 
 export class AdminModel {
-  static async getAll() {
-    return User.find({});
+  static async getAll () {
+    return User.find({}).select("-password");
   }
 
-  static async getById(id) {
-    const user = await User.findById(id);
-    if (!user) throw new ValidationError(msg.validation);
-    return user;
+  static async getById (id) {
+    return User.findById(id).select("-password");
   }
 
-  static async create(input) {
+  static async create (input) {
     const user = new User(input);
     return user.save();
   }
 
-  static async delete(id) {
-    return User.findByIdAndDelete(id);
+  static async update ({ id, input }) {
+    return User.findByIdAndUpdate(id, input,
+      { new: true, runValidators: true }).select("-password"); // new: true devuelve el objeto actualizado
   }
 
-  static async update({ id, input }) {
-    return User.findByIdAndUpdate(id, input,
-      { new: true, runValidators: true }); // new: true devuelve el objeto actualizado
+  static async delete (id) {
+    return User.findByIdAndDelete(id).select("-password");
   }
 }
