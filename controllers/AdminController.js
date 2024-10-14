@@ -14,9 +14,11 @@ export class AdminController {
 
   static async getById (req, res) {
     try {
-      const user = await AdminModel.getById(req.params.id);
+      const { id } = req.params;
+      const user = await AdminModel.getById({ id });
+
       if (!user) return handleError(new NotFound(msg.userNotFound), res);
-      
+
       res.json(user);
     } catch (err) {
       handleError(err, res);
@@ -25,7 +27,9 @@ export class AdminController {
 
   static async create (req, res) {
     try {
-      const user = await AdminModel.create(req.body);
+      const { username, password, role } = req.body;
+      const user = await AdminModel.create({ username, password, role });
+
       res.status(201).json(user);
     } catch (err) {
       handleError(err, res);
@@ -34,10 +38,10 @@ export class AdminController {
 
   static async update (req, res) {
     try {
-      const user = await AdminModel.update({
-        id: req.params.id,
-        input: req.body,
-      });
+      const { id } = req.params;
+      const { username, password, role } = req.body;
+      const user = await AdminModel.update({ id, username, password, role });
+
       if (!user) return handleError(new NotFound(msg.userNotFound), res);
 
       res.json(user);
@@ -48,7 +52,9 @@ export class AdminController {
 
   static async delete (req, res) {
     try {
-      const user = await AdminModel.delete(req.params.id);
+      const { id } = req.params;
+      const user = await AdminModel.delete({ id });
+      
       if (!user) return handleError(new NotFound(msg.userNotFound), res);
 
       res.status(204).send();

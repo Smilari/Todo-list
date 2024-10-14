@@ -25,25 +25,22 @@ const userSchema = new mongoose.Schema(
     },
     tasks: [
       {
-        type: mongoose.Schema.Types.ObjectId, // Relacionamos cada tarea con su ObjectId
-        ref: "Task", // Hace referencia al modelo de Tareas
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task", // Referencia al modelo Task
       },
     ],
   },
   {
     versionKey: false, // Esto oculta el campo __v
     timestamps: true,
-  }
+  },
 );
 
 // Middleware para encriptar la contraseña antes de guardarla
 userSchema.pre("save", async function (next) {
   const user = this;
-
-  // Si la contraseña no ha sido modificada, no necesitamos encriptarla de nuevo
   if (!user.isModified("password")) return next();
 
-  // Encripta la contraseña antes de guardar el usuario
   try {
     user.password = await bcrypt.hash(user.password, 10);
     next();

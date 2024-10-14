@@ -14,7 +14,6 @@ export class AuthModel {
     });
     await user.save();
     const token = await generateJWT(user, EXPIRES_IN);
-    console.log(token);
     return {
       user: {
         id: user.id,

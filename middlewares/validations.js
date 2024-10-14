@@ -14,7 +14,7 @@ export const validateJWT = async (req = request, res = response, next) => {
 
   try {
     const { id } = jwt.verify(token, PRIVATE_KEY);
-    const user = await AdminModel.getById(id);
+    const user = await AdminModel.getById({ id });
     if (!user) throw new ValidationError(msg.tokenNotValid);
     req.user = user;
     next();
