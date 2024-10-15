@@ -13,6 +13,17 @@ export class TasksController {
     }
   }
 
+  static async getByLoggedUser (req, res) {
+    try {
+      const { _id } = req.user;
+      const tasks = await TaskModel.getByUser({ userId: _id });
+
+      res.json(tasks);
+    } catch (err) {
+      handleError(err, res);
+    }
+  }
+
   static async getById (req, res) {
     try {
       const { id } = req.params;
@@ -29,6 +40,8 @@ export class TasksController {
   static async create (req, res) {
     try {
       const { userId } = req.query;
+      if (!userId) return handleError(new NotFound(msg.userNotProvided), res);
+
       const { title, description, dueDate, status, priority, category } = req.body;
       const task = await TaskModel.create({
         userId, title, description, dueDate, status, priority, category,
@@ -40,16 +53,27 @@ export class TasksController {
     }
   }
 
-  // TODO
+  static async createByLoggedUser (req, res) {
+    try {
+      const { _id: userId } = req.user;
+      const { title, description, dueDate, status, priority, category } = req.body;
+      const task = await TaskModel.create({
+        userId, title, description, dueDate, status, priority, category,
+      });
+
+      res.status(201).json(task);
+    } catch (err) {
+      handleError(err, res);
+    }
+
+  }
+
   static async update (req, res) {
     try {
       const { id } = req.params;
-      const { userId } = req.query;
-      if (!userId) return handleError(new NotFound(msg.userNotFound), res);
-
       const { title, description, dueDate, status, priority, category } = req.body;
       const task = await TaskModel.update({
-        id, userId, title, description, dueDate, status, priority, category,
+        id, title, description, dueDate, status, priority, category,
       });
 
       if (!task) return handleError(new NotFound(msg.taskNotFound), res);
@@ -60,7 +84,6 @@ export class TasksController {
     }
   }
 
-  // TODO
   static async delete (req, res) {
     try {
       const { id } = req.params;
