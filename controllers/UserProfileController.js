@@ -1,4 +1,4 @@
-import { AdminModel } from "../models/AdminModel.js";
+import { UserModel } from "../models/UserModel.js";
 import { handleError, NotFound } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 
@@ -6,8 +6,8 @@ export class UserProfileController {
   static async getProfile (req, res) {
     try {
       const { id } = req.user;
-      const user = await AdminModel.getById({ id });
-      
+      const user = await UserModel.getById({ id });
+
       if (!user) return handleError(new NotFound(msg.userNotFound), res);
 
       res.json(user);
@@ -20,7 +20,7 @@ export class UserProfileController {
     try {
       const { id } = req.user;
       const { username, password } = req.body;
-      const user = await AdminModel.update({ id, username, password });
+      const user = await UserModel.update({ id, username, password });
 
       if (!user) return handleError(new NotFound(msg.userNotFound), res);
 

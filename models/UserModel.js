@@ -1,6 +1,6 @@
 import { User } from "../schemas/User.js";
 
-export class AdminModel {
+export class UserModel {
   static async getAll () {
     return User.find({}).select("-password");
   }
@@ -14,8 +14,12 @@ export class AdminModel {
     return user.save();
   }
 
-  static async update ({ id, username, password, role }) {
-    return User.findByIdAndUpdate(id, { username, password, role },
+  static async update ({ id, username, password, role, tasks }) {
+    const updateData = { username, password, role };
+
+    if (tasks) updateData.$push = { tasks };
+
+    return User.findByIdAndUpdate(id, updateData,
       { new: true, runValidators: true }).select("-password"); // new: true devuelve el objeto actualizado
   }
 

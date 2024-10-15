@@ -1,10 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
-import { tasksRouter } from "./routes/tasks.js";
-import { authRouter } from "./routes/auth.js";
-import { adminRouter } from "./routes/admin.js";
-import { userProfileRouter } from "./routes/userProfile.js";
-import { userTasksRouter } from "./routes/userTasks.js";
+import { tasksRouter } from "./routes/tasksRouter.js";
+import { authRouter } from "./routes/authRouter.js";
+import { usersRouter } from "./routes/usersRouter.js";
+import { userProfileRouter } from "./routes/userProfileRouter.js";
+import { userTasksRouter } from "./routes/userTasksRouter.js";
 import { MONGO_URI, PORT } from "./helpers/config.js";
 import { handleError, NotFound } from "./helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "./helpers/messages.js";
@@ -49,11 +49,11 @@ export default class Server {
     this.app.use("/api", authRouter);
 
     // Ruta para la gestión de usuarios (admin)
-    this.app.use("/api/users", [validateJWT, validateAdmin], adminRouter);
+    this.app.use("/api/users", [validateJWT, validateAdmin], usersRouter);
 
     // Rutas para el perfil y las tareas del usuario autenticado
     this.app.use("/api/me/profile", [validateJWT], userProfileRouter);
-    this.app.use("/api/me/tasks", userTasksRouter);
+    this.app.use("/api/me/tasks", [validateJWT], userTasksRouter);
     console.log("Routes loaded");
 
     // Ruta por defecto para cualquier ruta no encontrada
