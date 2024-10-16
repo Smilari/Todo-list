@@ -2,8 +2,12 @@ import { response, request } from "express";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/UserModel.js";
 import { TaskModel } from "../models/TaskModel.js";
+import { ProjectModel } from "../models/ProjectModel.js";
 import {
-  handleError, NotFound, Unauthorized, ValidationError,
+  handleError,
+  NotFound,
+  Unauthorized,
+  ValidationError,
 } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 import { PRIVATE_KEY } from "../helpers/config.js";
@@ -26,20 +30,40 @@ export const validateJWT = async (req = request, res = response, next) => {
 
 export const validateAdmin = async (req = request, res = response, next) => {
   const { user } = req;
-  if (user.role !== "admin") return handleError(
-    new Unauthorized(msg.unauthorized), res);
+  if (user.role !== "admin")
+    return handleError(new Unauthorized(msg.unauthorized), res);
 
   next();
 };
 
-export const validateTaskIsFromUser = async (req = request, res = response, next) => {
+export const validateTaskIsFromUser = async (
+  req = request,
+  res = response,
+  next
+) => {
   const { user } = req;
   const { id } = req.params;
   const task = await TaskModel.getById({ id });
 
   if (!task) return handleError(new NotFound(msg.taskNotFound), res);
-  if (task.user.toString() !== user._id.toString()) return handleError(
-    new Unauthorized(msg.unauthorized), res);
+  if (task.user.toString() !== user._id.toString())
+    return handleError(new Unauthorized(msg.unauthorized), res);
+
+  next();
+};
+
+export const validateProjectIsFromUser = async (
+  req = request,
+  res = response,
+  next
+) => {
+  const { user } = req;
+  const { id } = req.params;
+  const project = await ProjectModel.getById({ id });
+
+  if (!project) return handleError(new NotFound(msg.projectNotFound), res);
+  if (project.user.toString() !== user._id.toString())
+    return handleError(new Unauthorized(msg.unauthorized), res);
 
   next();
 };
