@@ -15,8 +15,7 @@ export class TasksController {
 
   static async getByLoggedUser (req, res) {
     try {
-      const { _id } = req.user;
-      const tasks = await TaskModel.getByUser({ userId: _id });
+      const { tasks } = req.user;
 
       res.json(tasks);
     } catch (err) {

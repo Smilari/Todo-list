@@ -31,7 +31,7 @@ export const validateJWT = async (req = request, res = response, next) => {
 export const validateAdmin = async (req = request, res = response, next) => {
   const { user } = req;
   if (user.role !== "admin")
-    return handleError(new Unauthorized(msg.unauthorized), res);
+    return handleError(new Unauthorized(msg.notSufficientPermissions), res);
 
   next();
 };
@@ -39,7 +39,7 @@ export const validateAdmin = async (req = request, res = response, next) => {
 export const validateTaskIsFromUser = async (
   req = request,
   res = response,
-  next
+  next,
 ) => {
   const { user } = req;
   const { id } = req.params;
@@ -55,7 +55,7 @@ export const validateTaskIsFromUser = async (
 export const validateProjectIsFromUser = async (
   req = request,
   res = response,
-  next
+  next,
 ) => {
   const { user } = req;
   const { id } = req.params;

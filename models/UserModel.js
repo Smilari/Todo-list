@@ -21,22 +21,24 @@ export class UserModel {
       { new: true, runValidators: true }).select("-password"); // new: true devuelve el objeto actualizado
   }
 
-  static async insertTaskToUser ({
-    id,
-    taskId,
-    title,
-    description,
-    dueDate,
-    status,
-    priority,
-    category,
-  }) {
-    const input = { _id: taskId, title, description, dueDate, status, priority, category };
-    return User.findByIdAndUpdate(id, { $push: { tasks: input } },
+  static async delete ({ id }) {
+    return User.findByIdAndDelete(id).select("-password");
+  }
+
+  static async insertTaskInUser ({ id, task }) {
+    return User.findByIdAndUpdate(id, { $push: { tasks: task } },
       { new: true, runValidators: true });
   }
 
-  static async delete ({ id }) {
-    return User.findByIdAndDelete(id).select("-password");
+  static async updateTaskInUser ({ id, task }) {
+    console.log(`input: ${task}`);
+    return User.findOneAndUpdate({ _id: id, "tasks._id": task.id }, { $set: { "tasks.$": task } },
+      { new: true, runValidators: true });
+  }
+
+  static async deleteTaskInUser ({ id, task }) {
+    return User.findOneAndUpdate({ _id: id, "tasks._id": task.id },
+      { $pull: { "tasks": { _id: task.id } } },
+      { new: true, runValidators: true });
   }
 }
