@@ -17,12 +17,14 @@ export class TaskModel {
   static async create ({ userId, title, description, dueDate, status, priority, category }) {
     const session = await Task.startSession();
     session.startTransaction();
+
     try {
       const input = { user: userId, title, description, dueDate, status, priority, category };
       const task = new Task(input);
       await task.save({ session });
 
-      await UserModel.update({ id: userId, tasks: task.id });
+      await UserModel.insertTaskToUser(
+        { id: userId, taskId: task.id, title, description, dueDate, status, priority, category });
 
       await session.commitTransaction();
       return task;

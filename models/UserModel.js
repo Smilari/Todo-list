@@ -14,13 +14,26 @@ export class UserModel {
     return user.save();
   }
 
-  static async update ({ id, username, password, role, tasks }) {
-    const updateData = { username, password, role };
+  static async update ({ id, username, password, role }) {
+    const input = { username, password, role };
 
-    if (tasks) updateData.$push = { tasks };
-
-    return User.findByIdAndUpdate(id, updateData,
+    return User.findByIdAndUpdate(id, input,
       { new: true, runValidators: true }).select("-password"); // new: true devuelve el objeto actualizado
+  }
+
+  static async insertTaskToUser ({
+    id,
+    taskId,
+    title,
+    description,
+    dueDate,
+    status,
+    priority,
+    category,
+  }) {
+    const input = { _id: taskId, title, description, dueDate, status, priority, category };
+    return User.findByIdAndUpdate(id, { $push: { tasks: input } },
+      { new: true, runValidators: true });
   }
 
   static async delete ({ id }) {

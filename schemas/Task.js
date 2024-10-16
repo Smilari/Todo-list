@@ -22,10 +22,12 @@ const taskSchema = new mongoose.Schema(
       type: String,
       enum: ["Pendiente", "En Progreso", "Terminado"],
       required: [true, msg.requiredField()],
+      default: "Pendiente",
     },
     priority: {
       type: Number,
       required: [true, msg.requiredField()],
+      default: 1,
     },
     category: {
       type: String,

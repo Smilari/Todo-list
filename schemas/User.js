@@ -25,8 +25,13 @@ const userSchema = new mongoose.Schema(
     },
     tasks: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Task", // Referencia al modelo Task
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: true },
+        title: String,
+        description: String,
+        dueDate: Date,
+        status: String,
+        priority: Number,
+        category: String,
       },
     ],
   },
