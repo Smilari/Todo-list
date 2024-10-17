@@ -1,94 +1,55 @@
 import { UserModel } from "../models/UserModel.js";
-import { handleError, NotFound } from "../helpers/ErrorHandler.js";
+import { NotFound } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 
 export class UserController {
   static async getAll (req, res) {
-    try {
-      const users = await UserModel.getAll();
-
-      res.json(users);
-    } catch (err) {
-      handleError(err, res);
-    }
+    const users = await UserModel.getAll();
+    res.json(users);
   }
 
   static async getByLoggedUser (req, res) {
-    try {
-      const { id } = req.user;
-      const user = await UserModel.getById({ id });
-
-      if (!user) return handleError(new NotFound(msg.userNotFound), res);
-
-      res.json(user);
-    } catch (err) {
-      handleError(err, res);
-    }
+    const { user } = req;
+    res.json(user);
   }
 
   static async getById (req, res) {
-    try {
-      const { id } = req.params;
-      const user = await UserModel.getById({ id });
+    const { id } = req.params;
+    const user = await UserModel.getById({ id });
+    if (!user) throw new NotFound(msg.userNotFound);
 
-      if (!user) return handleError(new NotFound(msg.userNotFound), res);
-
-      res.json(user);
-    } catch (err) {
-      handleError(err, res);
-    }
+    res.json(user);
   }
 
   static async create (req, res) {
-    try {
-      const { username, password, role } = req.body;
-      const user = await UserModel.create({ username, password, role });
-
-      res.status(201).json(user);
-    } catch (err) {
-      handleError(err, res);
-    }
+    const { username, password, role } = req.body;
+    const user = await UserModel.create({ username, password, role });
+    res.status(201).json(user);
   }
 
   static async update (req, res) {
-    try {
-      const { id } = req.params;
-      const { username, password, role } = req.body;
-      const user = await UserModel.update({ id, username, password, role });
+    const { id } = req.params;
+    const { username, password, role } = req.body;
+    const user = await UserModel.update({ id, username, password, role });
+    if (!user) throw new NotFound(msg.userNotFound);
 
-      if (!user) return handleError(new NotFound(msg.userNotFound), res);
-
-      res.json(user);
-    } catch (err) {
-      return handleError(err, res);
-    }
+    res.json(user);
   }
 
   static async updateByLoggedUser (req, res) {
-    try {
-      const { id } = req.user;
-      const { username, password } = req.body;
-      const user = await UserModel.update({ id, username, password });
+    const { id } = req.user;
+    const { username, password } = req.body;
+    const user = await UserModel.update({ id, username, password });
+    if (!user) throw new NotFound(msg.userNotFound);
 
-      if (!user) return handleError(new NotFound(msg.userNotFound), res);
-
-      res.json(user);
-    } catch (err) {
-      handleError(err, res);
-    }
-
+    res.json(user);
   }
 
   static async delete (req, res) {
-    try {
-      const { id } = req.params;
-      const user = await UserModel.delete({ id });
+    const { id } = req.params;
+    const user = await UserModel.delete({ id });
+    if (!user) throw new NotFound(msg.userNotFound);
 
-      if (!user) return handleError(new NotFound(msg.userNotFound), res);
-
-      res.status(204).send();
-    } catch (err) {
-      handleError(err, res);
-    }
+    res.status(204).send();
   }
 }

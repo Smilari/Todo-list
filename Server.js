@@ -20,6 +20,7 @@ export default class Server {
     this.app = express();
     this.loadMiddlewares();
     this.loadRoutes();
+    this.loadPostRoutesMiddlewares();
   }
 
   listen () {
@@ -59,11 +60,20 @@ export default class Server {
     // Rutas para los proyectos
     this.app.use("/api/projects", [validateJWT], userProjectsRouter);
     console.log("Routes loaded");
+  }
 
+  loadPostRoutesMiddlewares () {
     // Ruta por defecto para cualquier ruta no encontrada
     this.app.use((req, res) => {
       handleError(new NotFound(msg.routeNotFound), res);
     });
+
+    // Middleware global para manejar errores
+    this.app.use((err, req, res, next) => {
+      handleError(err, res);
+    });
+
+    console.log("Post-routes middlewares loaded");
   }
 
   connectBD () {
