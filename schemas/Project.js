@@ -29,7 +29,11 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    //Crear un campo mas para asosciar usuarios?
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Referencia al modelo User
+      required: [true, msg.requiredField()],
+    },
     tasks: [
       {
         _id: {
