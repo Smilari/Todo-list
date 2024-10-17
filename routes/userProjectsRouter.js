@@ -8,17 +8,15 @@ export const userProjectsRouter = Router();
 
 userProjectsRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
-userProjectsRouter.get("/",
-  asyncHandler(projectsController.getByLoggedUser.bind(projectsController)));
+userProjectsRouter.get("/", asyncHandler(projectsController.getByLoggedUser));
 
 userProjectsRouter.get("/:id", [validateProjectIsFromUser],
-  asyncHandler(projectsController.getById.bind(projectsController)));
+  asyncHandler(projectsController.getById));
 
-userProjectsRouter.post("/",
-  asyncHandler(projectsController.createByLoggedUser.bind(projectsController)));
+userProjectsRouter.post("/", asyncHandler(projectsController.createByLoggedUser));
 
 userProjectsRouter.patch("/:id", [validateProjectIsFromUser],
-  asyncHandler(projectsController.update.bind(projectsController)));
+  asyncHandler(projectsController.update));
 
 userProjectsRouter.delete("/:id", [validateProjectIsFromUser],
-  asyncHandler(projectsController.delete.bind(projectsController)));
+  asyncHandler(projectsController.delete));

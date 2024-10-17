@@ -53,7 +53,7 @@ export class UserModel {
     const input = { username, password, role };
 
     return User.findByIdAndUpdate(id, input,
-      { new: true, runValidators: true }).select("-password"); // new: true devuelve el objeto actualizado
+      { new: true, runValidators: true }).select("-password");
   }
 
   static async delete ({ id }) {

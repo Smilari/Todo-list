@@ -7,5 +7,5 @@ export const authRouter = Router();
 
 authRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
-authRouter.post("/login", asyncHandler(usersController.login.bind(usersController)));
-authRouter.post("/register", asyncHandler(usersController.register.bind(usersController)));
+authRouter.post("/login", asyncHandler(usersController.login));
+authRouter.post("/register", asyncHandler(usersController.register));

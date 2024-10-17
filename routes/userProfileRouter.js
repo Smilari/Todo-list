@@ -7,6 +7,5 @@ export const userProfileRouter = Router();
 
 userProfileRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
-userProfileRouter.get("/", asyncHandler(usersController.getByLoggedUser.bind(usersController)));
-userProfileRouter.patch("/",
-  asyncHandler(usersController.updateByLoggedUser.bind(usersController)));
+userProfileRouter.get("/", asyncHandler(usersController.getByLoggedUser));
+userProfileRouter.patch("/", asyncHandler(usersController.updateByLoggedUser));

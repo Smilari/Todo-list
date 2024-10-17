@@ -2,10 +2,12 @@ import { UserModel } from "../models/UserModel.js";
 import { NotFound } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 import { BaseController } from "./BaseController.js";
+import autoBind from "auto-bind";
 
 export class UsersController extends BaseController {
   constructor () {
     super(UserModel, msg.userNotFound);
+    autoBind(this);
   }
 
   async getByLoggedUser (req, res) {
