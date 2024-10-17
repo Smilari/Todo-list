@@ -24,7 +24,7 @@ export const validateJWT = async (req = request, res = response, next) => {
     req.user = user;
     next();
   } catch (err) {
-    handleError(err, res);
+    next(err);
   }
 };
 

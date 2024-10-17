@@ -70,6 +70,7 @@ export default class Server {
 
     // Middleware global para manejar errores
     this.app.use((err, req, res, next) => {
+      console.log(err);
       handleError(err, res);
     });
 
