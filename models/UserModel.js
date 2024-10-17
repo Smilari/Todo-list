@@ -41,4 +41,21 @@ export class UserModel {
       { $pull: { "tasks": { _id: task.id } } },
       { new: true, runValidators: true });
   }
+
+  static async insertProjectInUser ({ id, project }) {
+    return User.findByIdAndUpdate(id, { $push: { projects: project } },
+      { new: true, runValidators: true });
+  }
+
+  static async updateProjectInUser ({ id, project }) {
+    console.log(`input: ${project}`);
+    return User.findOneAndUpdate({ _id: id, "projects._id": project.id }, { $set: { "projects.$": project } },
+      { new: true, runValidators: true });
+  }
+
+  static async deleteProjectInUser ({ id, project }) {
+    return User.findOneAndUpdate({ _id: id, "projects._id": project.id },
+      { $pull: { "projects": { _id: project.id } } },
+      { new: true, runValidators: true });
+  }
 }

@@ -2,7 +2,7 @@ import { ProjectModel } from "../models/ProjectModel.js";
 import { handleError, NotFound } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 
-export class ProjectController { //Cod repetido hay que ver si se puede evitar
+export class ProjectController {
   static async getAll (req, res) {
     try {
       const projects = await ProjectModel.getAll();
@@ -12,6 +12,17 @@ export class ProjectController { //Cod repetido hay que ver si se puede evitar
       handleError(err, res);
     }
   }
+
+  static async getByLoggedUser (req, res) {
+    try {
+      const { projects } = req.user;
+
+      res.json(projects);
+    } catch (err) {
+      handleError(err, res);
+    }
+  }
+
   static async getById (req, res) {
     try {
       const { id } = req.params;
@@ -25,18 +36,34 @@ export class ProjectController { //Cod repetido hay que ver si se puede evitar
     }
   }
 
-  static async createByLoggedUser (req, res) {
+  static async create (req, res) {
     try {
+      const { userId } = req.query;
+      if (!userId) return handleError(new NotFound(msg.userNotProvided), res);
+
       const { title, description, dueDate, status, category } = req.body;
       const project = await ProjectModel.create({
-        title, description, dueDate, status, category, tasks: [],
+        userId, title, description, dueDate, status, category, tasks: [],
       });
 
       res.status(201).json(project);
     } catch (err) {
       handleError(err, res);
     }
+  }
 
+  static async createByLoggedUser (req, res) {
+    try {
+      const {_id: userId} = req.user;
+      const { title, description, dueDate, status, category } = req.body;
+      const project = await ProjectModel.create({
+        userId, title, description, dueDate, status, category, tasks: [],
+      });
+
+      res.status(201).json(project);
+    } catch (err) {
+      handleError(err, res);
+    }
   }
 
   static async update (req, res) {

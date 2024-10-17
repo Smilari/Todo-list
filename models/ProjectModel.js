@@ -1,4 +1,7 @@
 import { Project } from "../schemas/Project.js";
+import { UserModel } from "./UserModel.js";
+import { NotFound } from "../helpers/ErrorHandler.js";
+import { messagesByLang as msg } from "../helpers/messages.js";
 
 export class ProjectModel {
   static async getAll() {
@@ -9,40 +12,20 @@ export class ProjectModel {
     return Project.findById(id);
   }
 
-  static async create({
-    title,
-    description,
-    dueDate,
-    status,
-    category,
-    tasks,
-  }) {
+  static async getByUser ({ userId }) {
+    return Project.find({ user: userId });
+  }
+
+  static async create({userId, title, description, dueDate, status, category, tasks}) {
     const session = await Project.startSession();
     session.startTransaction();
 
     try {
-      const input = {
-        title,
-        description,
-        dueDate,
-        status,
-        category,
-        tasks,
-      };
+      const input = { user: userId, title, description, dueDate, status, category, tasks};
       const project = new Project(input);
       await project.save({ session });
 
-      //Asignar proyecto a usuario?
-      /*await UserModel.insertProjectToUser({
-        id: userId,
-        projectId: project.id,
-        title,
-        description,
-        dueDate,
-        status,
-        category,
-        tasks,
-      });*/
+      await UserModel.insertProjectInUser({ id: userId, project });
 
       await session.commitTransaction();
       return project;
@@ -54,23 +37,46 @@ export class ProjectModel {
     }
   }
 
-  static async update({
-    id,
-    title,
-    description,
-    dueDate,
-    status,
-    category,
-    tasks,
-  }) {
-    const input = { title, description, dueDate, status, category, tasks };
-    return Project.findByIdAndUpdate(id, input, {
-      new: true,
-      runValidators: true,
-    }); // new: true devuelve el objeto actualizado
+  static async update({id, title, description, dueDate, status, category, tasks}) {
+    const session = await Project.startSession();
+    session.startTransaction();
+
+    try {
+      const input = { title, description, dueDate, status, category, tasks };
+      const project = await Project.findByIdAndUpdate(id, input, { new: true, runValidators: true });
+
+      if (!project) throw new NotFound(msg.projectNotFound);
+
+      await UserModel.updateProjectInUser({ id: project.user, project });
+
+      await session.commitTransaction();
+      return project;
+    } catch (err) {
+      await session.abortTransaction();
+      throw err;
+    } finally {
+      await session.endSession();
+    }
   }
 
   static async delete({ id }) {
-    return Project.findByIdAndDelete(id);
+    const session = await Project.startSession();
+    session.startTransaction();
+    
+    try {
+      const project = await Project.findByIdAndDelete(id);
+
+      if (!project) throw new NotFound(msg.projectNotFound);
+
+      await UserModel.deleteProjectInUser({ id: project.user, project });
+
+      await session.commitTransaction();
+      return project;
+    } catch (err) {
+      await session.abortTransaction();
+      throw err;
+    } finally {
+      await session.endSession();
+    }
   }
 }

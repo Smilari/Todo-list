@@ -5,7 +5,7 @@ import { authRouter } from "./routes/authRouter.js";
 import { usersRouter } from "./routes/usersRouter.js";
 import { userProfileRouter } from "./routes/userProfileRouter.js";
 import { userTasksRouter } from "./routes/userTasksRouter.js";
-import { projectRouter } from "./routes/projectRouter.js";
+import { userProjectsRouter } from "./routes/userProjectsRouter.js";
 import { MONGO_URI, PORT } from "./helpers/config.js";
 import { handleError, NotFound } from "./helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "./helpers/messages.js";
@@ -57,7 +57,7 @@ export default class Server {
     this.app.use("/api/me/tasks", [validateJWT], userTasksRouter);
 
     // Rutas para los proyectos
-    this.app.use("/api/projects", [validateJWT], projectRouter);
+    this.app.use("/api/projects", [validateJWT], userProjectsRouter);
     console.log("Routes loaded");
 
     // Ruta por defecto para cualquier ruta no encontrada

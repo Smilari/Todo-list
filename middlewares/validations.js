@@ -36,11 +36,7 @@ export const validateAdmin = async (req = request, res = response, next) => {
   next();
 };
 
-export const validateTaskIsFromUser = async (
-  req = request,
-  res = response,
-  next,
-) => {
+export const validateTaskIsFromUser = async (req = request, res = response, next) => {
   const { user } = req;
   const { id } = req.params;
   const task = await TaskModel.getById({ id });
@@ -52,11 +48,7 @@ export const validateTaskIsFromUser = async (
   next();
 };
 
-export const validateProjectIsFromUser = async (
-  req = request,
-  res = response,
-  next,
-) => {
+export const validateProjectIsFromUser = async (req = request, res = response, next) => {
   const { user } = req;
   const { id } = req.params;
   const project = await ProjectModel.getById({ id });

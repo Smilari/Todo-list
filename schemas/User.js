@@ -34,6 +34,17 @@ const userSchema = new mongoose.Schema(
         category: String,
       },
     ],
+    projects: [
+      {
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Project", required: true }, 
+        title: String,
+        description: String,
+        dueDate: Date,
+        status: String,
+        category: String,
+        //Las tareas del proyecto ya estan referenciadas en el modelo Project
+      },
+    ],
   },
   {
     versionKey: false, // Esto oculta el campo __v
