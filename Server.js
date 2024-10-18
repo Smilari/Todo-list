@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { tasksRouter } from "./routes/tasksRouter.js";
+import { projectRouter } from "./routes/projectRouter.js";
 import { authRouter } from "./routes/authRouter.js";
 import { usersRouter } from "./routes/usersRouter.js";
 import { userProfileRouter } from "./routes/userProfileRouter.js";
@@ -47,6 +48,9 @@ export default class Server {
     // Ruta para las tareas de la API
     this.app.use("/api/tasks", [validateJWT, validateAdmin], tasksRouter);
 
+    // Rutas para los proyectos
+    this.app.use("/api/projects", [validateJWT, validateAdmin], projectRouter);
+
     // Ruta para la autenticación de usuarios
     this.app.use("/api", authRouter);
 
@@ -58,8 +62,6 @@ export default class Server {
     this.app.use("/api/me/tasks", [validateJWT], userTasksRouter);
     this.app.use("/api/me/projects", [validateJWT], userProjectsRouter);
 
-    // Rutas para los proyectos
-    //TODO...
     console.log("Routes loaded");
   }
 
