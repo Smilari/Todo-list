@@ -13,6 +13,7 @@ const projectSchema = new mongoose.Schema(
     description: {
       type: String,
       required: false,
+      maxlength: [200, msg.maxLength(200)],
     },
     dueDate: {
       type: Date,
