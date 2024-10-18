@@ -53,12 +53,13 @@ export default class Server {
     // Ruta para la gestión de usuarios (admin)
     this.app.use("/api/users", [validateJWT, validateAdmin], usersRouter);
 
-    // Rutas para el perfil y las tareas del usuario autenticado
+    // Rutas para el perfil, las tareas y projectos del usuario autenticado
     this.app.use("/api/me/profile", [validateJWT], userProfileRouter);
     this.app.use("/api/me/tasks", [validateJWT], userTasksRouter);
+    this.app.use("/api/me/projects", [validateJWT], userProjectsRouter);
 
     // Rutas para los proyectos
-    this.app.use("/api/projects", [validateJWT], userProjectsRouter);
+    //TODO...
     console.log("Routes loaded");
   }
 

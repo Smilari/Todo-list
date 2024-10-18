@@ -84,8 +84,7 @@ export class UserModel {
 
   static async updateProjectInUser ({ id, project }) {
     console.log(`input: ${project}`);
-    return User.findOneAndUpdate({ _id: id, "projects._id": project.id },
-      { $set: { "projects.$": project } },
+    return User.findOneAndUpdate({ _id: id, "projects._id": project.id }, { $set: { "projects.$": project } },
       { new: true, runValidators: true });
   }
 
