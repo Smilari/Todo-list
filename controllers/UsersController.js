@@ -1,12 +1,11 @@
-import { UserModel } from "../models/UserModel.js";
-import { NotFound } from "../helpers/ErrorHandler.js";
-import { messagesByLang as msg } from "../helpers/messages.js";
 import { BaseController } from "./BaseController.js";
+import { UserModel } from "../models/UserModel.js";
+import { messagesByLang as msg } from "../helpers/messages.js";
 import autoBind from "auto-bind";
 
 export class UsersController extends BaseController {
   constructor () {
-    super(UserModel, msg.userNotFound);
+    super(new UserModel(), msg.userNotFound);
     autoBind(this);
   }
 
@@ -18,21 +17,19 @@ export class UsersController extends BaseController {
   async updateByLoggedUser (req, res) {
     const { id } = req.user;
     const { username, password } = req.body;
-    const user = await UserModel.update({ id, username, password });
-    if (!user) throw new NotFound(msg.userNotFound);
-
+    const user = await this.model.update({ id, input: { username, password } });
     res.json(user);
   }
 
   async register (req, res) {
-    const { username, password, role } = req.body;
-    const { user, token } = await UserModel.register({ username, password, role });
-    res.status(201).json({ user, token });
+    const { body } = req;
+    const { user, token } = await this.model.register({ input: body });
+    res.status(201).json({ token, user });
   }
 
   async login (req, res) {
-    const { username, password } = req.body;
-    const { user, token } = await UserModel.login({ username, password });
-    res.json({ user, token });
+    const { body } = req;
+    const { user, token } = await this.model.login({ input: body });
+    res.json({ token, user });
   }
 }

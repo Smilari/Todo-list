@@ -1,11 +1,11 @@
+import { BaseController } from "./BaseController.js";
 import { TaskModel } from "../models/TaskModel.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
-import { BaseController } from "./BaseController.js";
 import autoBind from "auto-bind";
 
 export class TasksController extends BaseController {
   constructor () {
-    super(TaskModel, msg.taskNotFound);
+    super(new TaskModel(), msg.taskNotFound);
     autoBind(this);
   }
 
@@ -17,7 +17,7 @@ export class TasksController extends BaseController {
   async createByLoggedUser (req, res) {
     const { user } = req;
     const { body } = req;
-    const task = await TaskModel.create({ userId: user.id, ...body });
+    const task = await this.model.create({ userId: user.id, input: body });
     res.status(201).json(task);
   }
 }

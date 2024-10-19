@@ -1,9 +1,6 @@
-import { NotFound } from "../helpers/ErrorHandler.js";
-
 export class BaseController {
-  constructor (model, notFoundMsg) {
+  constructor (model) {
     this.model = model;
-    this.notFoundMsg = notFoundMsg;
   }
 
   async getAll (req, res) {
@@ -14,31 +11,25 @@ export class BaseController {
   async getById (req, res) {
     const { id } = req.params;
     const data = await this.model.getById({ id });
-    if (!data) throw new NotFound(this.notFoundMsg);
-
     res.json(data);
   }
 
   async create (req, res) {
     const { body } = req;
-    const data = await this.model.create({ ...body });
+    const data = await this.model.create({ input: body });
     res.status(201).json(data);
   }
 
   async update (req, res) {
     const { id } = req.params;
     const { body } = req;
-    const data = await this.model.update({ id, ...body });
-    if (!data) throw new NotFound(this.notFoundMsg);
-
+    const data = await this.model.update({ id, input: body });
     res.json(data);
   }
 
   async delete (req, res) {
     const { id } = req.params;
-    const data = await this.model.delete({ id });
-    if (!data) throw new NotFound(this.notFoundMsg);
-
+    await this.model.delete({ id });
     res.status(204).send();
   }
 }

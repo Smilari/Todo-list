@@ -1,82 +1,40 @@
+import { BaseModel } from "./BaseModel.js";
 import { Task } from "../schemas/Task.js";
 import { UserModel } from "./UserModel.js";
-import { NotFound } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
+import { runTransaction } from "../helpers/runTransaction.js";
 
-export class TaskModel {
-  static async getAll () {
-    return Task.find({});
+export class TaskModel extends BaseModel {
+  constructor () {
+    super(Task, msg.taskNotFound);
+    this.userModel = new UserModel();
   }
 
-  static async getById ({ id }) {
-    return Task.findById(id);
-  }
+  async create ({ userId, input }) {
+    input = { user: userId, ...input };
+    return runTransaction(async session => {
+      const task = await super.create({ input, session });
+      await this.userModel.insertTaskInUser({ id: userId, task, session });
 
-  static async getByUser ({ userId }) {
-    return Task.find({ user: userId });
-  }
-
-  static async create ({ userId, title, description, dueDate, status, priority, category }) {
-    const session = await Task.startSession();
-    session.startTransaction();
-
-    try {
-      const input = { user: userId, title, description, dueDate, status, priority, category };
-      const task = new Task(input);
-      await task.save({ session });
-
-      await UserModel.insertTaskInUser({ id: userId, task });
-
-      await session.commitTransaction();
       return task;
-    } catch (err) {
-      await session.abortTransaction();
-      throw err;
-    } finally {
-      await session.endSession();
-    }
+    }, Task);
   }
 
-  static async update ({ id, title, description, dueDate, status, priority, category }) {
-    const session = await Task.startSession();
-    session.startTransaction();
+  async update ({ id, input }) {
+    return runTransaction(async session => {
+      const task = await super.update({ id, input, session });
+      await this.userModel.updateTaskInUser({ id: task.user, task, session });
 
-    try {
-      const input = { title, description, dueDate, status, priority, category };
-      const task = await Task.findByIdAndUpdate(id, input, { new: true, runValidators: true });
-
-      if (!task) throw new NotFound(msg.taskNotFound);
-
-      await UserModel.updateTaskInUser({ id: task.user, task });
-
-      await session.commitTransaction();
       return task;
-    } catch (err) {
-      await session.abortTransaction();
-      throw err;
-    } finally {
-      await session.endSession();
-    }
+    }, Task);
   }
 
-  static async delete ({ id }) {
-    const session = await Task.startSession();
-    session.startTransaction();
+  async delete ({ id }) {
+    return runTransaction(async session => {
+      const task = await super.delete({ id, session });
+      await this.userModel.deleteTaskInUser({ id: task.user, task, session });
 
-    try {
-      const task = await Task.findByIdAndDelete(id);
-
-      if (!task) throw new NotFound(msg.taskNotFound);
-
-      await UserModel.deleteTaskInUser({ id: task.user, task });
-
-      await session.commitTransaction();
       return task;
-    } catch (err) {
-      await session.abortTransaction();
-      throw err;
-    } finally {
-      await session.endSession();
-    }
+    }, Task);
   }
 }

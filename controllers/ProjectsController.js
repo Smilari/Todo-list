@@ -1,11 +1,11 @@
+import { BaseController } from "./BaseController.js";
 import { ProjectModel } from "../models/ProjectModel.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
-import { BaseController } from "./BaseController.js";
 import autoBind from "auto-bind";
 
 export class ProjectsController extends BaseController {
   constructor () {
-    super(ProjectModel, msg.projectNotFound);
+    super(new ProjectModel(), msg.projectNotFound);
     autoBind(this);
   }
 
@@ -17,7 +17,7 @@ export class ProjectsController extends BaseController {
   async createByLoggedUser (req, res) {
     const { user } = req;
     const { body } = req;
-    const project = await ProjectModel.create({ userId: user.id, ...body, tasks: [] });
+    const project = await this.model.create({ userId: user.id, ...body, tasks: [] });
     res.status(201).json(project);
   }
 }

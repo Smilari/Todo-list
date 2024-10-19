@@ -1,82 +1,40 @@
+import { BaseModel } from "./BaseModel.js";
 import { Project } from "../schemas/Project.js";
 import { UserModel } from "./UserModel.js";
-import { NotFound } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
+import { runTransaction } from "../helpers/runTransaction.js";
 
-export class ProjectModel {
-  static async getAll() {
-    return Project.find({});
+export class ProjectModel extends BaseModel {
+  constructor () {
+    super(Project, msg.projectNotFound);
+    this.userModel = new UserModel();
   }
 
-  static async getById({ id }) {
-    return Project.findById(id);
-  }
+  async create ({ userId, input }) {
+    input = { user: userId, ...input };
+    return runTransaction(async session => {
+      const project = super.create({ input, session });
+      await this.userModel.insertProjectInUser({ id: userId, project, session });
 
-  static async getByUser ({ userId }) {
-    return Project.find({ user: userId });
-  }
-
-  static async create({userId, title, description, dueDate, status, category, tasks}) {
-    const session = await Project.startSession();
-    session.startTransaction();
-
-    try {
-      const input = { user: userId, title, description, dueDate, status, category, tasks};
-      const project = new Project(input);
-      await project.save({ session });
-
-      await UserModel.insertProjectInUser({ id: userId, project });
-
-      await session.commitTransaction();
       return project;
-    } catch (err) {
-      await session.abortTransaction();
-      throw err;
-    } finally {
-      await session.endSession();
-    }
+    }, Project);
   }
 
-  static async update({id, title, description, dueDate, status, category, tasks}) {
-    const session = await Project.startSession();
-    session.startTransaction();
+  async update ({ id, input }) {
+    return runTransaction(async session => {
+      const project = await super.update({ id, input, session });
+      await this.userModel.updateProjectInUser({ id: project.user, project, session });
 
-    try {
-      const input = { title, description, dueDate, status, category, tasks };
-      const project = await Project.findByIdAndUpdate(id, input, { new: true, runValidators: true });
-
-      if (!project) throw new NotFound(msg.projectNotFound);
-
-      await UserModel.updateProjectInUser({ id: project.user, project });
-
-      await session.commitTransaction();
       return project;
-    } catch (err) {
-      await session.abortTransaction();
-      throw err;
-    } finally {
-      await session.endSession();
-    }
+    }, Project);
   }
 
-  static async delete({ id }) {
-    const session = await Project.startSession();
-    session.startTransaction();
-    
-    try {
-      const project = await Project.findByIdAndDelete(id);
+  async delete ({ id }) {
+    return runTransaction(async session => {
+      const project = await super.delete({ id, session });
+      await this.userModel.deleteProjectInUser({ id: project.user, project });
 
-      if (!project) throw new NotFound(msg.projectNotFound);
-
-      await UserModel.deleteProjectInUser({ id: project.user, project });
-
-      await session.commitTransaction();
       return project;
-    } catch (err) {
-      await session.abortTransaction();
-      throw err;
-    } finally {
-      await session.endSession();
-    }
+    }, Project);
   }
 }

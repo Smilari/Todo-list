@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema(
     ],
     projects: [
       {
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Project", required: true }, 
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Project", required: true },
         title: String,
         description: String,
         dueDate: Date,
@@ -63,6 +63,13 @@ userSchema.pre("save", async function (next) {
   } catch (error) {
     next(error);
   }
+});
+
+userSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    delete ret.password; // Eliminar la contraseña del resultado JSON
+    return ret;
+  },
 });
 
 export const User = mongoose.model("User", userSchema);
