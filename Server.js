@@ -8,6 +8,7 @@ import { usersRouter } from "./routes/usersRouter.js";
 import { userProfileRouter } from "./routes/userProfileRouter.js";
 import { userTasksRouter } from "./routes/userTasksRouter.js";
 import { userProjectsRouter } from "./routes/userProjectsRouter.js";
+import { userCommentsRouter } from "./routes/userCommentsRouter.js";
 import { MONGO_URI, PORT } from "./helpers/config.js";
 import { handleError, NotFound } from "./helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "./helpers/messages.js";
@@ -46,25 +47,20 @@ export default class Server {
   }
 
   loadRoutes () {
-    // Ruta para las tareas de la API
-    this.app.use("/api/tasks", [validateJWT, validateAdmin], tasksRouter);
-
-    // Rutas para los proyectos
-    this.app.use("/api/projects", [validateJWT, validateAdmin], projectRouter);
-
-    // Rutas para los comentarios
-    this.app.use("/api/comments", [validateJWT, validateAdmin], commentRouter);
-
     // Ruta para la autenticación de usuarios
     this.app.use("/api", authRouter);
 
-    // Ruta para la gestión de usuarios (admin)
+    // Ruta del Admin para la gestión de usuarios, tareas, proyectos y comentarios
     this.app.use("/api/users", [validateJWT, validateAdmin], usersRouter);
+    this.app.use("/api/tasks", [validateJWT, validateAdmin], tasksRouter);
+    this.app.use("/api/projects", [validateJWT, validateAdmin], projectRouter);
+    this.app.use("/api/comments", [validateJWT, validateAdmin], commentRouter);
 
-    // Rutas para el perfil, las tareas y projectos del usuario autenticado
+    // Rutas del User para el perfil, las tareas, projectos y comentarios
     this.app.use("/api/me/profile", [validateJWT], userProfileRouter);
     this.app.use("/api/me/tasks", [validateJWT], userTasksRouter);
     this.app.use("/api/me/projects", [validateJWT], userProjectsRouter);
+    this.app.use("/api/me/comments", [validateJWT], userCommentsRouter);
 
     console.log("Routes loaded");
   }
