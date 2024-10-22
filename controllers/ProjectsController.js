@@ -17,7 +17,8 @@ export class ProjectsController extends BaseController {
   async createByLoggedUser (req, res) {
     const { user } = req;
     const { body } = req;
-    const project = await this.model.create({ userId: user.id, ...body, tasks: [] });
+    const input = { ...body, userId: user.id };
+    const project = await this.model.create({ input });
     res.status(201).json(project);
   }
 }

@@ -36,7 +36,7 @@ const taskSchema = new mongoose.Schema(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Referencia al modelo User
+      ref: "User",
       required: [true, msg.requiredField()],
     },
     comments: [
@@ -48,7 +48,7 @@ const taskSchema = new mongoose.Schema(
     ],
   },
   {
-    versionKey: false, // Esto oculta el campo __v
+    versionKey: false,
     timestamps: true,
   },
 );

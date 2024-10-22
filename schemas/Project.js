@@ -32,12 +32,12 @@ const projectSchema = new mongoose.Schema(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Referencia al modelo User
+      ref: "User",
       required: [true, msg.requiredField()],
     },
     tasks: [
       {
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: false},
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: false },
         title: String,
         description: String,
         dueDate: Date,
@@ -48,9 +48,9 @@ const projectSchema = new mongoose.Schema(
     ],
   },
   {
-    versionKey: false, // Esto oculta el campo __v
+    versionKey: false,
     timestamps: true,
-  }
+  },
 );
 
 export const Project = mongoose.model("Project", projectSchema);

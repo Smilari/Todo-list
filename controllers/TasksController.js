@@ -17,7 +17,8 @@ export class TasksController extends BaseController {
   async createByLoggedUser (req, res) {
     const { user } = req;
     const { body } = req;
-    const task = await this.model.create({ userId: user.id, input: body });
+    const input = { ...body, userId: user.id };
+    const task = await this.model.create({ input });
     res.status(201).json(task);
   }
 }

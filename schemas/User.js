@@ -42,12 +42,11 @@ const userSchema = new mongoose.Schema(
         dueDate: Date,
         status: String,
         category: String,
-        //Las tareas del proyecto ya están referenciadas en el modelo Project
       },
     ],
   },
   {
-    versionKey: false, // Esto oculta el campo __v
+    versionKey: false,
     timestamps: true,
   },
 );

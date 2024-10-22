@@ -12,7 +12,7 @@ const commentSchema = new mongoose.Schema(
     },
     taskId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Task", // Referencia al modelo Task
+      ref: "Task",
       required: [true, msg.requiredField()],
     },
     date: {
@@ -23,7 +23,7 @@ const commentSchema = new mongoose.Schema(
   {
     versionKey: false, // Esto oculta el campo __v
     timestamps: true,
-  }
+  },
 );
 
 export const Comment = mongoose.model("Comment", commentSchema);
