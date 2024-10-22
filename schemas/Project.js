@@ -30,14 +30,14 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Referencia al modelo User
       required: [true, msg.requiredField()],
     },
     tasks: [
       {
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: true},
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: false},
         title: String,
         description: String,
         dueDate: Date,

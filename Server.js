@@ -50,7 +50,7 @@ export default class Server {
     // Ruta para la autenticación de usuarios
     this.app.use("/api", authRouter);
 
-    // Ruta del Admin para la gestión de usuarios, tareas, proyectos y comentarios
+    // Rutas del Admin para la gestión de usuarios, tareas, proyectos y comentarios
     this.app.use("/api/users", [validateJWT, validateAdmin], usersRouter);
     this.app.use("/api/tasks", [validateJWT, validateAdmin], tasksRouter);
     this.app.use("/api/projects", [validateJWT, validateAdmin], projectsRouter);

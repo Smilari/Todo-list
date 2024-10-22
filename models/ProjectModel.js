@@ -10,11 +10,10 @@ export class ProjectModel extends BaseModel {
     this.userModel = new UserModel();
   }
 
-  async create ({ userId, input }) {
-    input = { user: userId, ...input };
+  async create ({ input }) {
     return runTransaction(async session => {
-      const project = super.create({ input, session });
-      await this.userModel.insertProjectInUser({ id: userId, project, session });
+      const project = await super.create({ input, session });
+      await this.userModel.insertProjectInUser({ id: input.userId, project, session });
 
       return project;
     }, Project);
@@ -23,7 +22,7 @@ export class ProjectModel extends BaseModel {
   async update ({ id, input }) {
     return runTransaction(async session => {
       const project = await super.update({ id, input, session });
-      await this.userModel.updateProjectInUser({ id: project.user, project, session });
+      await this.userModel.updateProjectInUser({ id: project.userId, project, session });
 
       return project;
     }, Project);
@@ -32,7 +31,7 @@ export class ProjectModel extends BaseModel {
   async delete ({ id }) {
     return runTransaction(async session => {
       const project = await super.delete({ id, session });
-      await this.userModel.deleteProjectInUser({ id: project.user, project });
+      await this.userModel.deleteProjectInUser({ id: project.userId, project, session });
 
       return project;
     }, Project);
