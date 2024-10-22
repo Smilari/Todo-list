@@ -27,8 +27,13 @@ const messages = {
 
     // Tasks messages
     taskNotFound: "Task not found",
-    projectNotFound: "Project not found",
     userNotProvided: "User not provided",
+
+    // Projects messages
+    projectNotFound: "Project not found",
+
+    // Comments messages
+    commentNotFound: "Comment not found",
   },
   es: {
     // Mensajes de usuario
@@ -56,8 +61,13 @@ const messages = {
 
     // Mensajes de las tareas
     taskNotFound: "Tarea no encontrada",
-    projectNotFound: "Proyecto no encontrado",
     UserNotProvided: "Usuario no proporcionado",
+
+    // Mensajes de los proyectos
+    projectNotFound: "Proyecto no encontrado",
+
+    // Mensajes de los comentarios
+    commentNotFound: "Comentario no encontrado",
   },
 };
 

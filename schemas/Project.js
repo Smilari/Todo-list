@@ -37,11 +37,7 @@ const projectSchema = new mongoose.Schema(
     },
     tasks: [
       {
-        _id: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Task",
-          required: true,
-        },
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: true},
         title: String,
         description: String,
         dueDate: Date,

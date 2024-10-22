@@ -10,9 +10,9 @@ const commentSchema = new mongoose.Schema(
       maxlength: [200, msg.maxLength(200)],
       trim: true,
     },
-    user: {
+    task: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Referencia al modelo User
+      ref: "Task", // Referencia al modelo Task
       required: [true, msg.requiredField()],
     },
     date: {

@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { tasksRouter } from "./routes/tasksRouter.js";
 import { projectRouter } from "./routes/projectRouter.js";
+import { commentRouter } from "./routes/commentRouter.js";
 import { authRouter } from "./routes/authRouter.js";
 import { usersRouter } from "./routes/usersRouter.js";
 import { userProfileRouter } from "./routes/userProfileRouter.js";
@@ -50,6 +51,9 @@ export default class Server {
 
     // Rutas para los proyectos
     this.app.use("/api/projects", [validateJWT, validateAdmin], projectRouter);
+
+    // Rutas para los comentarios
+    this.app.use("/api/comments", [validateJWT, validateAdmin], commentRouter);
 
     // Ruta para la autenticación de usuarios
     this.app.use("/api", authRouter);

@@ -41,22 +41,9 @@ const taskSchema = new mongoose.Schema(
     },
     comments: [
       {
-        text: {
-          type: String,
-          required: [true, msg.requiredField()],
-          minlength: [2, msg.minLength(2)],
-          maxlength: [200, msg.maxLength(200)],
-          trim: true,
-        },
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: [true, msg.requiredField()],
-        },
-        date: {
-          type: Date,
-          required: false,
-        },
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Comment", required: true},
+        text: String,
+        date: Date,
       },
     ],
   },
