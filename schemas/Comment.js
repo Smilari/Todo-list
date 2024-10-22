@@ -15,6 +15,10 @@ const commentSchema = new mongoose.Schema(
       ref: "User", // Referencia al modelo User
       required: [true, msg.requiredField()],
     },
+    date: {
+      type: Date,
+      required: false,
+    },
   },
   {
     versionKey: false, // Esto oculta el campo __v

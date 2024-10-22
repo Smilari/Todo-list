@@ -39,6 +39,26 @@ const taskSchema = new mongoose.Schema(
       ref: "User", // Referencia al modelo User
       required: [true, msg.requiredField()],
     },
+    comments: [
+      {
+        text: {
+          type: String,
+          required: [true, msg.requiredField()],
+          minlength: [2, msg.minLength(2)],
+          maxlength: [200, msg.maxLength(200)],
+          trim: true,
+        },
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: [true, msg.requiredField()],
+        },
+        date: {
+          type: Date,
+          required: false,
+        },
+      },
+    ],
   },
   {
     versionKey: false, // Esto oculta el campo __v
