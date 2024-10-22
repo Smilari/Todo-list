@@ -2,9 +2,7 @@ import { BaseModel } from "./BaseModel.js";
 import { User } from "../schemas/User.js";
 import { NotFound, ValidationError } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
-import { EXPIRES_IN } from "../helpers/config.js";
 import { generateJWT } from "../helpers/generateJWT.js";
-import bcrypt from "bcrypt";
 
 export class UserModel extends BaseModel {
   constructor () {
@@ -16,17 +14,16 @@ export class UserModel extends BaseModel {
     const user = await User.findOne({ username });
     if (!user) throw new ValidationError(msg.validation);
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) throw new ValidationError(msg.validation);
+    if (!await user.isPasswordCorrect(password)) throw new ValidationError(msg.validation);
 
-    const token = await generateJWT(user, EXPIRES_IN);
+    const token = await generateJWT(user);
 
     return { user, token };
   }
 
   async register ({ input }) {
     const user = await this.create({ input });
-    const token = await generateJWT(user, EXPIRES_IN);
+    const token = await generateJWT(user);
 
     return { user, token };
   }

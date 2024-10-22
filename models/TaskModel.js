@@ -11,11 +11,10 @@ export class TaskModel extends BaseModel {
     this.userModel = new UserModel();
   }
 
-  async create ({ userId, input }) {
-    input = { user: userId, ...input };
+  async create ({ input }) {
     return runTransaction(async session => {
       const task = await super.create({ input, session });
-      await this.userModel.insertTaskInUser({ id: userId, task, session });
+      await this.userModel.insertTaskInUser({ id: input.userId, task, session });
 
       return task;
     }, Task);
@@ -24,7 +23,7 @@ export class TaskModel extends BaseModel {
   async update ({ id, input }) {
     return runTransaction(async session => {
       const task = await super.update({ id, input, session });
-      await this.userModel.updateTaskInUser({ id: task.user, task, session });
+      await this.userModel.updateTaskInUser({ id: task.userId, task, session });
 
       return task;
     }, Task);
@@ -33,7 +32,7 @@ export class TaskModel extends BaseModel {
   async delete ({ id }) {
     return runTransaction(async session => {
       const task = await super.delete({ id, session });
-      await this.userModel.deleteTaskInUser({ id: task.user, task, session });
+      await this.userModel.deleteTaskInUser({ id: task.userId, task, session });
 
       return task;
     }, Task);
@@ -45,19 +44,19 @@ export class TaskModel extends BaseModel {
   }
 
   async updateCommentInTask ({ id, comment, session }) {
-    const task = await Task.findOneAndUpdate({_id: id, "comments._id": comment._id}, 
-        { $set: { "comments.$": comment } },
-        { session, new: true, runValidators: true });
-      if (!task) throw new NotFound(msg.taskNotFound);
+    const task = await Task.findOneAndUpdate({ _id: id, "comments._id": comment._id },
+      { $set: { "comments.$": comment } },
+      { session, new: true, runValidators: true });
+    if (!task) throw new NotFound(msg.taskNotFound);
 
     return task;
   }
 
   async deleteCommentInTask ({ id, comment, session }) {
-    const task = await Task.findOneAndUpdate({_id: id, "comments._id": comment._id}, 
-        { $pull: { "comments": { _id: comment.id } } },
-        { session, new: true, runValidators: true });
-      if (!task) throw new NotFound(msg.taskNotFound);
+    const task = await Task.findOneAndUpdate({ _id: id, "comments._id": comment._id },
+      { $pull: { "comments": { _id: comment.id } } },
+      { session, new: true, runValidators: true });
+    if (!task) throw new NotFound(msg.taskNotFound);
 
     return task;
   }

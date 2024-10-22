@@ -1,8 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import { tasksRouter } from "./routes/tasksRouter.js";
-import { projectRouter } from "./routes/projectRouter.js";
-import { commentRouter } from "./routes/commentRouter.js";
+import { projectsRouter } from "./routes/projectsRouter.js";
+import { commentsRouter } from "./routes/commentsRouter.js";
 import { authRouter } from "./routes/authRouter.js";
 import { usersRouter } from "./routes/usersRouter.js";
 import { userProfileRouter } from "./routes/userProfileRouter.js";
@@ -21,9 +21,9 @@ export default class Server {
   constructor () {
     this.port = PORT;
     this.app = express();
-    this.loadMiddlewares();
+    this.loadPreMiddlewares();
     this.loadRoutes();
-    this.loadPostRoutesMiddlewares();
+    this.loadPostMiddlewares();
   }
 
   listen () {
@@ -32,7 +32,7 @@ export default class Server {
     });
   }
 
-  loadMiddlewares () {
+  loadPreMiddlewares () {
     this.app.use(express.json()); // Parsea el body del request para solicitudes de tipo POST y PUT
     this.app.use(helmet()); // Protege contra ataques XSS y CSRF
     this.app.use(cors()); // Permite la comunicación entre dominios externos
@@ -53,8 +53,8 @@ export default class Server {
     // Ruta del Admin para la gestión de usuarios, tareas, proyectos y comentarios
     this.app.use("/api/users", [validateJWT, validateAdmin], usersRouter);
     this.app.use("/api/tasks", [validateJWT, validateAdmin], tasksRouter);
-    this.app.use("/api/projects", [validateJWT, validateAdmin], projectRouter);
-    this.app.use("/api/comments", [validateJWT, validateAdmin], commentRouter);
+    this.app.use("/api/projects", [validateJWT, validateAdmin], projectsRouter);
+    this.app.use("/api/comments", [validateJWT, validateAdmin], commentsRouter);
 
     // Rutas del User para el perfil, las tareas, projectos y comentarios
     this.app.use("/api/me/profile", [validateJWT], userProfileRouter);
@@ -65,7 +65,7 @@ export default class Server {
     console.log("Routes loaded");
   }
 
-  loadPostRoutesMiddlewares () {
+  loadPostMiddlewares () {
     // Ruta por defecto para cualquier ruta no encontrada
     this.app.use((req, res) => {
       handleError(new NotFound(msg.routeNotFound), res);

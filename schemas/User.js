@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
         dueDate: Date,
         status: String,
         category: String,
-        //Las tareas del proyecto ya estan referenciadas en el modelo Project
+        //Las tareas del proyecto ya están referenciadas en el modelo Project
       },
     ],
   },
@@ -63,6 +63,10 @@ userSchema.pre("save", async function (next) {
   } catch (error) {
     next(error);
   }
+});
+
+userSchema.method("isPasswordCorrect", async function (password) {
+  return bcrypt.compare(password, this.password);
 });
 
 userSchema.set("toJSON", {

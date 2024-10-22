@@ -1,15 +1,13 @@
 import jwt from "jsonwebtoken";
 import { handleError } from "./ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
-import { PRIVATE_KEY } from "./config.js";
+import { EXPIRES_IN, PRIVATE_KEY } from "./config.js";
 
-export const generateJWT = (user, time = "10s") => {
+export const generateJWT = (user) => {
   return new Promise((resolve, reject) => {
-    const payload = {
-      id: user.id, username: user.username, role: user.role,
-    };
+    const payload = { id: user.id };
     jwt.sign(payload, PRIVATE_KEY, {
-        expiresIn: time,
+        expiresIn: EXPIRES_IN ?? 3000,
       },
       (err, token) => {
         if (err) {

@@ -34,14 +34,14 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Referencia al modelo User
       required: [true, msg.requiredField()],
     },
     comments: [
       {
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Comment", required: true},
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Comment", required: true },
         text: String,
         date: Date,
       },
