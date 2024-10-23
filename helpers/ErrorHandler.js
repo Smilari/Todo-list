@@ -11,6 +11,7 @@ export const handleError = ((err, res) => {
     status: "ERROR",
     statusCode,
     message,
+    // stackTrace: err.stack,
   });
 });
 

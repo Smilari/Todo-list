@@ -1,6 +1,6 @@
 import { BaseModel } from "./BaseModel.js";
 import { User } from "../schemas/User.js";
-import { NotFound, ValidationError } from "../helpers/ErrorHandler.js";
+import { ValidationError } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 import { generateJWT } from "../helpers/generateJWT.js";
 
@@ -29,48 +29,26 @@ export class UserModel extends BaseModel {
   }
 
   async insertTaskInUser ({ id, task, session }) {
-    return User.findByIdAndUpdate(id, { $push: { tasks: task } },
-      { session, new: true, runValidators: true });
+    return this.insertItemInArray({ id, arrayName: "tasks", item: task, session });
   }
 
   async updateTaskInUser ({ id, task, session }) {
-    const user = await User.findOneAndUpdate({ _id: id, "tasks._id": task.id },
-      { $set: { "tasks.$": task } },
-      { session, new: true, runValidators: true });
-    if (!user) throw new NotFound(msg.userNotFound);
-
-    return user;
+    return this.updateItemInArray({ id, arrayName: "tasks", item: task, session });
   }
 
   async deleteTaskInUser ({ id, task, session }) {
-    const user = await User.findOneAndUpdate({ _id: id, "tasks._id": task.id },
-      { $pull: { "tasks": { _id: task.id } } },
-      { session, new: true, runValidators: true });
-    if (!user) throw new NotFound(msg.userNotFound);
-
-    return user;
+    return this.deleteItemInArray({ id, arrayName: "tasks", item: task, session });
   }
 
   async insertProjectInUser ({ id, project, session }) {
-    return User.findByIdAndUpdate(id, { $push: { projects: project } },
-      { session, new: true, runValidators: true });
+    return this.insertItemInArray({ id, arrayName: "projects", item: project, session });
   }
 
   async updateProjectInUser ({ id, project, session }) {
-    const user = await User.findOneAndUpdate({ _id: id, "projects._id": project.id },
-      { $set: { "projects.$": project } },
-      { session, new: true, runValidators: true });
-    if (!user) throw new NotFound(msg.userNotFound);
-
-    return user;
+    return this.updateItemInArray({ id, arrayName: "projects", item: project, session });
   }
 
   async deleteProjectInUser ({ id, project, session }) {
-    const user = await User.findOneAndUpdate({ _id: id, "projects._id": project.id },
-      { $pull: { "projects": { _id: project.id } } },
-      { session, new: true, runValidators: true });
-    if (!user) throw new NotFound(msg.userNotFound);
-
-    return user;
+    return this.deleteItemInArray({ id, arrayName: "projects", item: project, session });
   }
 }

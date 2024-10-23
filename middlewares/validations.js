@@ -38,7 +38,7 @@ export const validateTaskIsFromUser = async (req = request, res = response, next
   const { id } = req.params;
   try {
     const task = await taskModel.getById({ id });
-    if (task.user.toString() !== user._id.toString())
+    if (task.userId.toString() !== user._id.toString())
       throw new Unauthorized(msg.unauthorized);
   } catch (err) {
     return handleError(err, res);
@@ -52,7 +52,7 @@ export const validateProjectIsFromUser = async (req = request, res = response, n
   const { id } = req.params;
   try {
     const project = await projectModel.getById({ id });
-    if (project.user.toString() !== user._id.toString())
+    if (project.userId.toString() !== user._id.toString())
       throw new Unauthorized(msg.unauthorized);
   } catch (err) {
     return handleError(err, res);
