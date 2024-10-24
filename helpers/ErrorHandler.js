@@ -6,13 +6,13 @@ export const handleError = ((err, res) => {
     statusCode = 500,
     message = msg.internalError,
   } = err;
-  console.log(err.stack);
+  // console.log(err.stack);
   return res.status(statusCode).json({
     name,
     status: "ERROR",
     statusCode,
     message,
-    stackTrace: err.stack,
+    // stackTrace: err.stack,
   });
 });
 

@@ -36,4 +36,16 @@ export class ProjectModel extends BaseModel {
       return project;
     }, Project);
   }
+
+  async insertTaskInProject ({ id, task, session }) {
+    return this.insertItemInArray({ id, arrayName: "tasks", item: task, session });
+  }
+
+  async updateTaskInProject ({ id, task, session }) {
+    return this.updateItemInArray({ id, arrayName: "tasks", item: task, session });
+  }
+
+  async deleteTaskInProject ({ id, task, session }) {
+    return this.deleteItemInArray({ id, arrayName: "tasks", item: task, session });
+  }
 }
