@@ -15,7 +15,7 @@ import { messagesByLang as msg } from "./helpers/messages.js";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
-import { validateAdmin, validateJWT } from "./middlewares/validations.js";
+import { validateAdmin, validateJWT, validateTaskIsFromUser } from "./middlewares/validations.js";
 
 export default class Server {
   constructor () {
@@ -60,7 +60,8 @@ export default class Server {
     this.app.use("/api/me/profile", [validateJWT], userProfileRouter);
     this.app.use("/api/me/tasks", [validateJWT], userTasksRouter);
     this.app.use("/api/me/projects", [validateJWT], userProjectsRouter);
-    this.app.use("/api/me/comments", [validateJWT], userCommentsRouter);
+    this.app.use("/api/me/:taskId/comments", [validateJWT, validateTaskIsFromUser],
+      userCommentsRouter);
 
     console.log("Routes loaded");
   }

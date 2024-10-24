@@ -9,15 +9,16 @@ export class CommentsController extends BaseController {
     autoBind(this);
   }
 
-  async getByLoggedUser (req, res) {
-    const { comments } = req.user;
+  async getByTask (req, res) {
+    const { comments } = req.task;
     res.json(comments);
   }
 
-  async createByLoggedUser (req, res) {
-    const { user } = req;
+  async createByTask (req, res) {
+    const { task } = req;
     const { body } = req;
-    const comment = await this.model.create({ userId: user.id, input: body });
+    const input = { ...body, taskId: task.id };
+    const comment = await this.model.create({ input });
     res.status(201).json(comment);
   }
 }

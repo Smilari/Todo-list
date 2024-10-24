@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { UserModel } from "../models/UserModel.js";
 import { TaskModel } from "../models/TaskModel.js";
 import { ProjectModel } from "../models/ProjectModel.js";
+import { CommentModel } from "../models/CommentModel.js";
 import { handleError, NotFound, Unauthorized } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 import { PRIVATE_KEY } from "../helpers/config.js";
@@ -10,6 +11,7 @@ import { PRIVATE_KEY } from "../helpers/config.js";
 const userModel = new UserModel();
 const taskModel = new TaskModel();
 const projectModel = new ProjectModel();
+const commentModel = new CommentModel();
 
 export const validateJWT = async (req = request, res = response, next) => {
   const token = req.header("x-token");
@@ -35,16 +37,18 @@ export const validateAdmin = async (req = request, res = response, next) => {
 
 export const validateTaskIsFromUser = async (req = request, res = response, next) => {
   const { user } = req;
-  const { id } = req.params;
+  const { id, taskId } = req.params;
+  const searchId = taskId ?? id;
   try {
-    const task = await taskModel.getById({ id });
+    const task = await taskModel.getById({ id: searchId });
     if (task.userId.toString() !== user._id.toString())
       throw new Unauthorized(msg.unauthorized);
+
+    req.task = task;
+    next();
   } catch (err) {
     return handleError(err, res);
   }
-
-  next();
 };
 
 export const validateProjectIsFromUser = async (req = request, res = response, next) => {
@@ -54,9 +58,27 @@ export const validateProjectIsFromUser = async (req = request, res = response, n
     const project = await projectModel.getById({ id });
     if (project.userId.toString() !== user._id.toString())
       throw new Unauthorized(msg.unauthorized);
+
+    req.project = project;
+    next();
   } catch (err) {
     return handleError(err, res);
   }
+};
 
-  next();
+export const validateCommentIsFromTask = async (req = request, res = response, next) => {
+  const { task } = req;
+  const { id } = req.params;
+
+  try {
+    const comment = await commentModel.getById({ id });
+    if (comment.taskId.toString() !== task._id.toString()) {
+      throw new Unauthorized(msg.unauthorized);
+    }
+
+    req.comment = comment;
+    next();
+  } catch (err) {
+    return handleError(err, res);
+  }
 };

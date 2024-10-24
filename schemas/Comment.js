@@ -15,13 +15,9 @@ const commentSchema = new mongoose.Schema(
       ref: "Task",
       required: [true, msg.requiredField()],
     },
-    date: {
-      type: Date,
-      required: false,
-    },
   },
   {
-    versionKey: false, // Esto oculta el campo __v
+    versionKey: false,
     timestamps: true,
   },
 );
