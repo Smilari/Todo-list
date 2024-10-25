@@ -51,7 +51,6 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-// Middleware para encriptar la contraseña antes de guardarla
 userSchema.pre("save", async function (next) {
   const user = this;
   if (!user.isModified("password")) return next();
@@ -62,6 +61,19 @@ userSchema.pre("save", async function (next) {
   } catch (error) {
     next(error);
   }
+});
+
+userSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+
+  if (update.password) {
+    try {
+      update.password = await bcrypt.hash(update.password, 10);
+    } catch (error) {
+      return next(error);
+    }
+  }
+  next();
 });
 
 userSchema.method("isPasswordCorrect", async function (password) {
