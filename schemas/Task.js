@@ -34,21 +34,19 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: [true, msg.requiredField()],
     },
-    projectId: {
+    project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
     },
     comments: [
       {
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Comment", required: true },
-        text: String,
-        createdAt: Date,
-        updatedAt: Date,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
       },
     ],
   },

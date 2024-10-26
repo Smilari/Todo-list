@@ -15,9 +15,9 @@ export class TaskModel extends BaseModel {
   async create ({ input }) {
     return runTransaction(async session => {
       const task = await super.create({ input, session });
-      await this.userModel.insertTaskInUser({ id: input.userId, task, session });
-      if (task.projectId)
-        await this.projectModel.insertTaskInProject({ id: task.projectId, task, session });
+      await this.userModel.insertTaskInUser({ id: input.user, task, session });
+      if (task.project)
+        await this.projectModel.insertTaskInProject({ id: task.project, task, session });
 
       return task;
     }, Task);
@@ -25,52 +25,28 @@ export class TaskModel extends BaseModel {
 
   async update ({ id, input }) {
     return runTransaction(async session => {
-      const existingTask = await this.getById({ id });
-      const updatedTask = await super.update({ id, input, session });
+      const task = await super.update({ id, input, session });
 
-      if (existingTask.projectId && input.projectId !== existingTask.projectId) {
-        await this.projectModel.deleteTaskInProject(
-          { id: existingTask.projectId, task: existingTask, session });
-        await this.projectModel.insertTaskInProject(
-          { id: input.projectId, task: updatedTask, session });
-      } else if (existingTask.projectId && updatedTask.projectId) {
-        await this.projectModel.updateTaskInProject(
-          { id: updatedTask.projectId, task: updatedTask, session });
-      } else if (existingTask.projectId && !updatedTask.projectId) {
-        await this.projectModel.deleteTaskInProject(
-          { id: existingTask.projectId, task: existingTask, session });
-      } else if (!existingTask.projectId && updatedTask.projectId) {
-        await this.projectModel.insertTaskInProject(
-          { id: updatedTask.projectId, task: updatedTask, session });
-      }
-
-      await this.userModel.updateTaskInUser(
-        { id: updatedTask.userId, task: updatedTask, session });
-
-      return updatedTask;
+      return task;
     }, Task);
   }
 
   async delete ({ id }) {
     return runTransaction(async session => {
       const task = await super.delete({ id, session });
-      if (task.projectId) await this.projectModel.deleteTaskInProject(
-        { id: task.projectId, task, session });
-      await this.userModel.deleteTaskInUser({ id: task.userId, task, session });
+      if (task.project) await this.projectModel.deleteTaskInProject(
+        { id: task.project, task, session });
+      await this.userModel.deleteTaskInUser({ id: task.user, task, session });
 
       return task;
     }, Task);
   }
 
   async insertCommentInTask ({ id, comment, session }) {
-    return this.insertItemInArray({ id, arrayName: "comments", item: comment, session });
-  }
-
-  async updateCommentInTask ({ id, comment, session }) {
-    return this.updateItemInArray({ id, arrayName: "comments", item: comment, session });
+    return this.insertItemInArray({ id, arrayName: "comments", itemId: comment.id, session });
   }
 
   async deleteCommentInTask ({ id, comment, session }) {
-    return this.deleteItemInArray({ id, arrayName: "comments", item: comment, session });
+    return this.deleteItemInArray({ id, arrayName: "comments", itemId: comment.id, session });
   }
 }

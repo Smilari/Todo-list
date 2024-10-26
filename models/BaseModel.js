@@ -38,23 +38,18 @@ export class BaseModel {
     return doc;
   }
 
-  async insertItemInArray ({ id, arrayName, item, session }) {
-    return this.model.findByIdAndUpdate(id, { $push: { [arrayName]: item } },
-      { session, new: true, runValidators: true });
-  }
-
-  async updateItemInArray ({ id, arrayName, item, session }) {
-    const doc = await this.model.findOneAndUpdate({ _id: id, [`${arrayName}._id`]: item.id },
-      { $set: { [`${arrayName}.$`]: item } },
+  async insertItemInArray ({ id, arrayName, itemId, session }) {
+    const doc = await this.model.findByIdAndUpdate(id,
+      { $addToSet: { [arrayName]: itemId } },
       { session, new: true, runValidators: true });
     if (!doc) throw new NotFound(this.notFoundMessage);
 
     return doc;
   }
 
-  async deleteItemInArray ({ id, arrayName, item, session }) {
-    const doc = await this.model.findOneAndUpdate({ _id: id, [`${arrayName}._id`]: item.id },
-      { $pull: { [arrayName]: { _id: item.id } } },
+  async deleteItemInArray ({ id, arrayName, itemId, session }) {
+    const doc = await this.model.findByIdAndUpdate(id,
+      { $pull: { [arrayName]: itemId } },
       { session, new: true, runValidators: true });
     if (!doc) throw new NotFound(this.notFoundMessage);
 

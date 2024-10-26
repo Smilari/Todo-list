@@ -37,11 +37,11 @@ export const validateAdmin = async (req = request, res = response, next) => {
 
 export const validateTaskIsFromUser = async (req = request, res = response, next) => {
   const { user } = req;
-  const { id, taskId } = req.params;
-  const searchId = taskId ?? id;
+  const { id, task } = req.params;
+  const searchId = task ?? id;
   try {
     const task = await taskModel.getById({ id: searchId });
-    if (task.userId.toString() !== user._id.toString())
+    if (task.user.toString() !== user._id.toString())
       throw new Unauthorized(msg.unauthorized);
 
     req.task = task;
@@ -56,7 +56,7 @@ export const validateProjectIsFromUser = async (req = request, res = response, n
   const { id } = req.params;
   try {
     const project = await projectModel.getById({ id });
-    if (project.userId.toString() !== user._id.toString())
+    if (project.user.toString() !== user._id.toString())
       throw new Unauthorized(msg.unauthorized);
 
     req.project = project;
@@ -72,7 +72,7 @@ export const validateCommentIsFromTask = async (req = request, res = response, n
 
   try {
     const comment = await commentModel.getById({ id });
-    if (comment.taskId.toString() !== task._id.toString()) {
+    if (comment.task.toString() !== task._id.toString()) {
       throw new Unauthorized(msg.unauthorized);
     }
 

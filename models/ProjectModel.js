@@ -13,7 +13,7 @@ export class ProjectModel extends BaseModel {
   async create ({ input }) {
     return runTransaction(async session => {
       const project = await super.create({ input, session });
-      await this.userModel.insertProjectInUser({ id: input.userId, project, session });
+      await this.userModel.insertProjectInUser({ id: input.user, project, session });
 
       return project;
     }, Project);
@@ -22,7 +22,6 @@ export class ProjectModel extends BaseModel {
   async update ({ id, input }) {
     return runTransaction(async session => {
       const project = await super.update({ id, input, session });
-      await this.userModel.updateProjectInUser({ id: project.userId, project, session });
 
       return project;
     }, Project);
@@ -31,21 +30,17 @@ export class ProjectModel extends BaseModel {
   async delete ({ id }) {
     return runTransaction(async session => {
       const project = await super.delete({ id, session });
-      await this.userModel.deleteProjectInUser({ id: project.userId, project, session });
+      await this.userModel.deleteProjectInUser({ id: project.user, project, session });
 
       return project;
     }, Project);
   }
 
   async insertTaskInProject ({ id, task, session }) {
-    return this.insertItemInArray({ id, arrayName: "tasks", item: task, session });
-  }
-
-  async updateTaskInProject ({ id, task, session }) {
-    return this.updateItemInArray({ id, arrayName: "tasks", item: task, session });
+    return this.insertItemInArray({ id, arrayName: "tasks", itemId: task.id, session });
   }
 
   async deleteTaskInProject ({ id, task, session }) {
-    return this.deleteItemInArray({ id, arrayName: "tasks", item: task, session });
+    return this.deleteItemInArray({ id, arrayName: "tasks", itemId: task.id, session });
   }
 }

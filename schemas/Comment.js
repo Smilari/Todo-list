@@ -10,7 +10,7 @@ const commentSchema = new mongoose.Schema(
       maxlength: [200, msg.maxLength(200)],
       trim: true,
     },
-    taskId: {
+    task: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Task",
       required: [true, msg.requiredField()],

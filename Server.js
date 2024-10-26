@@ -60,7 +60,7 @@ export default class Server {
     this.app.use("/api/me/profile", [validateJWT], userProfileRouter);
     this.app.use("/api/me/tasks", [validateJWT], userTasksRouter);
     this.app.use("/api/me/projects", [validateJWT], userProjectsRouter);
-    this.app.use("/api/me/:taskId/comments", [validateJWT, validateTaskIsFromUser],
+    this.app.use("/api/me/:task/comments", [validateJWT, validateTaskIsFromUser],
       userCommentsRouter);
 
     console.log("Routes loaded");

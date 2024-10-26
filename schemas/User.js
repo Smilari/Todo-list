@@ -24,25 +24,10 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     tasks: [
-      {
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: true },
-        title: String,
-        description: String,
-        dueDate: Date,
-        status: String,
-        priority: Number,
-        category: String,
-      },
+      { type: mongoose.Schema.Types.ObjectId, ref: "Task" },
     ],
     projects: [
-      {
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Project", required: true },
-        title: String,
-        description: String,
-        dueDate: Date,
-        status: String,
-        category: String,
-      },
+      { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
     ],
   },
   {

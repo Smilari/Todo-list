@@ -17,7 +17,7 @@ export class CommentsController extends BaseController {
   async createByTask (req, res) {
     const { task } = req;
     const { body } = req;
-    const input = { ...body, taskId: task.id };
+    const input = { ...body, task: task.id };
     const comment = await this.model.create({ input });
     res.status(201).json(comment);
   }
