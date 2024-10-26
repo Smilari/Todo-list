@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 import { messagesByLang as msg } from "../helpers/messages.js";
 
 const taskSchema = new mongoose.Schema(
@@ -47,6 +48,7 @@ const taskSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
+        autopopulate: { select: "-task" },
       },
     ],
   },
@@ -55,5 +57,7 @@ const taskSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+taskSchema.plugin(autopopulate);
 
 export const Task = mongoose.model("Task", taskSchema);

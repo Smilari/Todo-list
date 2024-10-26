@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 import { messagesByLang as msg } from "../helpers/messages.js";
 
 const projectSchema = new mongoose.Schema(
@@ -36,7 +37,11 @@ const projectSchema = new mongoose.Schema(
       required: [true, msg.requiredField()],
     },
     tasks: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Task" },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task",
+        autopopulate: { select: "-project" },
+      },
     ],
   },
   {
@@ -44,5 +49,7 @@ const projectSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+projectSchema.plugin(autopopulate);
 
 export const Project = mongoose.model("Project", projectSchema);

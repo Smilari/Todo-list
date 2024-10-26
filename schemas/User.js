@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import autopopulate from "mongoose-autopopulate";
 import bcrypt from "bcrypt";
 import { messagesByLang as msg } from "../helpers/messages.js";
 
@@ -24,10 +25,10 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     tasks: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Task" },
+      { type: mongoose.Schema.Types.ObjectId, ref: "Task", autopopulate: { select: "-user" } },
     ],
     projects: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+      { type: mongoose.Schema.Types.ObjectId, ref: "Project", autopopulate: { select: "-user" } },
     ],
   },
   {
@@ -35,6 +36,8 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+userSchema.plugin(autopopulate);
 
 userSchema.pre("save", async function (next) {
   const user = this;
