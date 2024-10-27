@@ -1,20 +1,17 @@
 import Router from "express";
 import { TasksController } from "../controllers/TasksController.js";
-import { verifyUserTask } from "../middlewares/validations.js";
 import { asyncHandler } from "../helpers/asyncHandler.js";
 
 const tasksController = new TasksController();
-export const tasksRouter = Router();
+export const adminTasksRouter = Router();
 
-tasksRouter.disable("x-powered-by"); // Desactiva el header 'express'
+adminTasksRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
-tasksRouter.use("/:id", [verifyUserTask]);
-
-tasksRouter.route("/").
-  get(asyncHandler(tasksController.getByLoggedUser)).
+adminTasksRouter.route("/").
+  get(asyncHandler(tasksController.getAll)).
   post(asyncHandler(tasksController.create));
 
-tasksRouter.route("/:id").
+adminTasksRouter.route("/:id").
   get(asyncHandler(tasksController.getById)).
   delete(asyncHandler(tasksController.delete)).
   patch(asyncHandler(tasksController.update));

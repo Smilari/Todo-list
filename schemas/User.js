@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import autopopulate from "mongoose-autopopulate";
 import bcrypt from "bcrypt";
 import { messagesByLang as msg } from "../helpers/messages.js";
 
@@ -7,7 +6,7 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, msg.requiredField()],
+      required: [true, msg.requiredField],
       minlength: [3, msg.minLength(3)],
       maxlength: [20, msg.maxLength(20)],
       unique: true,
@@ -15,29 +14,21 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, msg.requiredField()],
+      required: [true, msg.requiredField],
       minlength: [6, msg.minLength(6)],
     },
     role: {
       type: String,
-      required: [true, msg.requiredField()],
+      required: [true, msg.requiredField],
       enum: ["admin", "user"],
       default: "user",
     },
-    tasks: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Task", autopopulate: { select: "-user" } },
-    ],
-    projects: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Project", autopopulate: { select: "-user" } },
-    ],
   },
   {
     versionKey: false,
     timestamps: true,
   },
 );
-
-userSchema.plugin(autopopulate);
 
 userSchema.pre("save", async function (next) {
   const user = this;

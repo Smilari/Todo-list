@@ -1,5 +1,6 @@
 import Router from "express";
 import { CommentsController } from "../controllers/CommentsController.js";
+import { verifyTaskComment } from "../middlewares/validations.js";
 import { asyncHandler } from "../helpers/asyncHandler.js";
 
 const commentsController = new CommentsController();
@@ -7,8 +8,13 @@ export const commentsRouter = Router();
 
 commentsRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
-commentsRouter.get("/", asyncHandler(commentsController.getAll));
-commentsRouter.get("/:id", asyncHandler(commentsController.getById));
-commentsRouter.post("/", asyncHandler(commentsController.create));
-commentsRouter.delete("/:id", asyncHandler(commentsController.delete));
-commentsRouter.patch("/:id", asyncHandler(commentsController.update));
+commentsRouter.use("/:id", [verifyTaskComment]);
+
+commentsRouter.route("/").
+  get(asyncHandler(commentsController.getByTask)).
+  post(asyncHandler(commentsController.create));
+
+commentsRouter.route("/:id").
+  get(asyncHandler(commentsController.getById)).
+  delete(asyncHandler(commentsController.delete)).
+  patch(asyncHandler(commentsController.update));

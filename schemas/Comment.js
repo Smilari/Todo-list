@@ -5,7 +5,7 @@ const commentSchema = new mongoose.Schema(
   {
     text: {
       type: String,
-      required: [true, msg.requiredField()],
+      required: [true, msg.requiredField],
       minlength: [2, msg.minLength(2)],
       maxlength: [200, msg.maxLength(200)],
       trim: true,
@@ -13,7 +13,7 @@ const commentSchema = new mongoose.Schema(
     task: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Task",
-      required: [true, msg.requiredField()],
+      required: [true, msg.requiredField],
     },
   },
   {

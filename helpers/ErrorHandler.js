@@ -28,5 +28,6 @@ export const createErrorFactory = function (name, statusCode) {
 };
 
 export const ValidationError = createErrorFactory("ValidationError", 400);
-export const NotFound = createErrorFactory("NotFound", 404);
-export const Unauthorized = createErrorFactory("Unauthorized", 401);
+export const NotFound = createErrorFactory("NotFoundError", 404);
+export const Unauthorized = createErrorFactory("UnauthorizedError", 401);
+export const Forbidden = createErrorFactory("ForbiddenError", 403);

@@ -1,21 +1,18 @@
 import Router from "express";
 import { ProjectsController } from "../controllers/ProjectsController.js";
-import { asyncHandler } from "../helpers/asyncHandler.js";
 import { verifyUserProject } from "../middlewares/validations.js";
-import { adminProjectsRouter } from "./adminProjectsRouter.js";
+import { asyncHandler } from "../helpers/asyncHandler.js";
 
 const projectsController = new ProjectsController();
-export const projectsRouter = Router();
+export const adminProjectsRouter = Router();
 
-projectsRouter.disable("x-powered-by"); // Desactiva el header 'express'
+adminProjectsRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
-projectsRouter.use("/:id", [verifyUserProject]);
-
-projectsRouter.route("/").
-  get(asyncHandler(projectsController.getByLoggedUser)).
+adminProjectsRouter.route("/").
+  get(asyncHandler(projectsController.getAll)).
   post(asyncHandler(projectsController.create));
 
-projectsRouter.route("/:id").
+adminProjectsRouter.route("/:id").
   get(asyncHandler(projectsController.getById)).
   delete(asyncHandler(projectsController.delete)).
   patch(asyncHandler(projectsController.update));

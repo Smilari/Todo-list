@@ -8,17 +8,4 @@ export class ProjectsController extends BaseController {
     super(new ProjectModel(), msg.projectNotFound);
     autoBind(this);
   }
-
-  async getByLoggedUser (req, res) {
-    const { projects } = req.user;
-    res.json(projects);
-  }
-
-  async createByLoggedUser (req, res) {
-    const { user } = req;
-    const { body } = req;
-    const input = { ...body, user: user.id };
-    const project = await this.model.create({ input });
-    res.status(201).json(project);
-  }
 }

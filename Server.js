@@ -4,18 +4,23 @@ import { tasksRouter } from "./routes/tasksRouter.js";
 import { projectsRouter } from "./routes/projectsRouter.js";
 import { commentsRouter } from "./routes/commentsRouter.js";
 import { authRouter } from "./routes/authRouter.js";
-import { usersRouter } from "./routes/usersRouter.js";
-import { userProfileRouter } from "./routes/userProfileRouter.js";
-import { userTasksRouter } from "./routes/userTasksRouter.js";
-import { userProjectsRouter } from "./routes/userProjectsRouter.js";
-import { userCommentsRouter } from "./routes/userCommentsRouter.js";
+import { adminUsersRouter } from "./routes/adminUsersRouter.js";
+import { profileRouter } from "./routes/profileRouter.js";
+import { adminTasksRouter } from "./routes/adminTasksRouter.js";
+import { adminProjectsRouter } from "./routes/adminProjectsRouter.js";
+import { adminCommentsRouter } from "./routes/adminCommentsRouter.js";
 import { MONGO_URI, PORT } from "./helpers/config.js";
 import { handleError, NotFound } from "./helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "./helpers/messages.js";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
-import { validateAdmin, validateJWT, validateTaskIsFromUser } from "./middlewares/validations.js";
+import {
+  checkAdmin,
+  authenticateJWT,
+  verifyUserTask,
+} from "./middlewares/validations.js";
+import { setOwner, setTask } from "./middlewares/setters.js";
 
 export default class Server {
   constructor () {
@@ -38,30 +43,24 @@ export default class Server {
     this.app.use(cors()); // Permite la comunicación entre dominios externos
     this.app.use(morgan("dev")); // Registra las peticiones en el servidor
 
-    // Middleware global para manejar errores
-    this.app.use((err, req, res, next) => {
-      handleError(err, res);
-    });
-
     console.log("Middlewares loaded");
   }
 
   loadRoutes () {
-    // Ruta para la autenticación de usuarios
-    this.app.use("/api", authRouter);
+    // Rutas para autenticación
+    this.app.use("/api/auth", authRouter);
 
-    // Rutas del Admin para la gestión de usuarios, tareas, proyectos y comentarios
-    this.app.use("/api/users", [validateJWT, validateAdmin], usersRouter);
-    this.app.use("/api/tasks", [validateJWT, validateAdmin], tasksRouter);
-    this.app.use("/api/projects", [validateJWT, validateAdmin], projectsRouter);
-    this.app.use("/api/comments", [validateJWT, validateAdmin], commentsRouter);
+    // Rutas del usuario autenticado
+    this.app.use("/api/me/profile", [authenticateJWT], profileRouter);
+    this.app.use("/api/me/tasks", [authenticateJWT, setOwner], tasksRouter);
+    this.app.use("/api/me/tasks/:taskId/comments", [authenticateJWT, verifyUserTask, setTask], commentsRouter);
+    this.app.use("/api/me/projects", [authenticateJWT, setOwner], projectsRouter);
 
-    // Rutas del User para el perfil, las tareas, projectos y comentarios
-    this.app.use("/api/me/profile", [validateJWT], userProfileRouter);
-    this.app.use("/api/me/tasks", [validateJWT], userTasksRouter);
-    this.app.use("/api/me/projects", [validateJWT], userProjectsRouter);
-    this.app.use("/api/me/:task/comments", [validateJWT, validateTaskIsFromUser],
-      userCommentsRouter);
+    // Rutas para administración de usuarios
+    this.app.use("/api/users", [authenticateJWT, checkAdmin], adminUsersRouter);
+    this.app.use("/api/:userId/tasks", [authenticateJWT, checkAdmin], adminTasksRouter);
+    this.app.use("/api/:userId/tasks/:taskId/comments", [authenticateJWT, checkAdmin], adminCommentsRouter);
+    this.app.use("/api/:userId/projects", [authenticateJWT, checkAdmin], adminProjectsRouter);
 
     console.log("Routes loaded");
   }
@@ -73,7 +72,7 @@ export default class Server {
     });
 
     // Middleware global para manejar errores
-    this.app.use((err, req, res, next) => {
+    this.app.use((err, req, res, _) => {
       handleError(err, res);
     });
 

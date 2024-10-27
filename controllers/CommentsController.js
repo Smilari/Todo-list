@@ -10,7 +10,8 @@ export class CommentsController extends BaseController {
   }
 
   async getByTask (req, res) {
-    const { comments } = req.task;
+    const { task } = req;
+    const comments = await this.model.getByFilter({ filter: { task: task.id } });
     res.json(comments);
   }
 

@@ -27,20 +27,4 @@ export class UserModel extends BaseModel {
 
     return { user, token };
   }
-
-  async insertTaskInUser ({ id, task, session }) {
-    return this.insertItemInArray({ id, arrayName: "tasks", itemId: task.id, session });
-  }
-
-  async deleteTaskInUser ({ id, task, session }) {
-    return this.deleteItemInArray({ id, arrayName: "tasks", itemId: task.id, session });
-  }
-
-  async insertProjectInUser ({ id, project, session }) {
-    return this.insertItemInArray({ id, arrayName: "projects", itemId: project.id, session });
-  }
-
-  async deleteProjectInUser ({ id, project, session }) {
-    return this.deleteItemInArray({ id, arrayName: "projects", itemId: project.id, session });
-  }
 }

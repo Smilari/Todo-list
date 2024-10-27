@@ -14,6 +14,12 @@ export class BaseController {
     res.json(data);
   }
 
+  async getByLoggedUser (req, res) {
+    const { user } = req;
+    const data = await this.model.getByFilter({ filter: { owner: user.id } });
+    res.json(data);
+  }
+
   async create (req, res) {
     const { body } = req;
     const data = await this.model.create({ input: body });
