@@ -1,6 +1,6 @@
 import Router from "express";
 import { TasksController } from "../controllers/TasksController.js";
-import { verifyUserTask } from "../middlewares/validations.js";
+import { verifyUserTask, validateProject } from "../middlewares/validations.js";
 import { asyncHandler } from "../helpers/asyncHandler.js";
 
 const tasksController = new TasksController();
@@ -12,9 +12,9 @@ tasksRouter.use("/:id", [verifyUserTask]);
 
 tasksRouter.route("/").
   get(asyncHandler(tasksController.getByLoggedUser)).
-  post(asyncHandler(tasksController.create));
+  post([validateProject], asyncHandler(tasksController.create));
 
 tasksRouter.route("/:id").
   get(asyncHandler(tasksController.getById)).
   delete(asyncHandler(tasksController.delete)).
-  patch(asyncHandler(tasksController.update));
+  patch([validateProject], asyncHandler(tasksController.update));

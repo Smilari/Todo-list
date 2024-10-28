@@ -11,7 +11,6 @@ const userModel = new UserModel();
 const taskModel = new TaskModel();
 const projectModel = new ProjectModel();
 const commentModel = new CommentModel();
-
 export const authenticateJWT = async (req, res, next) => {
   const token = req.header("x-token");
 
@@ -76,6 +75,26 @@ export const verifyTaskComment = async (req, res, next) => {
     }
 
     req.comment = comment;
+    next();
+  } catch (err) {
+    return handleError(err, res);
+  }
+};
+
+export const validateProject = async (req, res, next) => {
+  const { user } = req;
+  const projectId = req.body.project;
+
+  if (projectId === undefined) return next();
+  if (projectId === null || projectId === "") {
+    req.body.project = null;
+    return next();
+  }
+  try {
+    const project = await projectModel.getById({ id: projectId });
+
+    if (project.owner.toString() !== user._id.toString())
+      throw new Forbidden(msg.forbidden);
     next();
   } catch (err) {
     return handleError(err, res);

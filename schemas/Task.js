@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { messagesByLang as msg } from "../helpers/messages.js";
-import { Forbidden } from "../helpers/ErrorHandler.js";
 
 const taskSchema = new mongoose.Schema(
   {

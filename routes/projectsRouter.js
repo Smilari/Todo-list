@@ -2,7 +2,6 @@ import Router from "express";
 import { ProjectsController } from "../controllers/ProjectsController.js";
 import { asyncHandler } from "../helpers/asyncHandler.js";
 import { verifyUserProject } from "../middlewares/validations.js";
-import { adminProjectsRouter } from "./adminProjectsRouter.js";
 
 const projectsController = new ProjectsController();
 export const projectsRouter = Router();
