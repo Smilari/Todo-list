@@ -6,6 +6,7 @@ import { CommentModel } from "../models/CommentModel.js";
 import { Forbidden, handleError, Unauthorized } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 import { PRIVATE_KEY } from "../helpers/config.js";
+import { verifyOwnership } from "../helpers/verifyOwnership.js";
 
 const userModel = new UserModel();
 const taskModel = new TaskModel();
@@ -35,14 +36,9 @@ export const checkAdmin = async (req, res, next) => {
 
 export const verifyUserTask = async (req, res, next) => {
   const { user } = req;
-  const { id, taskId } = req.params;
-  const searchId = taskId ?? id;
+  const taskId = req.params.taskId || req.body.task;
   try {
-    const task = await taskModel.getById({ id: searchId });
-    if (task.owner.toString() !== user._id.toString())
-      throw new Forbidden(msg.forbidden);
-
-    req.task = task;
+    req.task = await verifyOwnership(taskModel, taskId, user._id);
     next();
   } catch (err) {
     return handleError(err, res);
@@ -51,13 +47,9 @@ export const verifyUserTask = async (req, res, next) => {
 
 export const verifyUserProject = async (req, res, next) => {
   const { user } = req;
-  const { id } = req.params;
+  const projectId = req.params.projectId || req.body.project;
   try {
-    const project = await projectModel.getById({ id });
-    if (project.owner.toString() !== user._id.toString())
-      throw new Forbidden(msg.forbidden);
-
-    req.project = project;
+    req.project = await verifyOwnership(projectModel, projectId, user._id);
     next();
   } catch (err) {
     return handleError(err, res);
@@ -95,6 +87,18 @@ export const validateProject = async (req, res, next) => {
 
     if (project.owner.toString() !== user._id.toString())
       throw new Forbidden(msg.forbidden);
+    next();
+  } catch (err) {
+    return handleError(err, res);
+  }
+};
+
+export const validateUserId = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const user = await userModel.getById({ id: userId });
+
+    req.user = user;
     next();
   } catch (err) {
     return handleError(err, res);

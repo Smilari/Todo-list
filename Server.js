@@ -15,12 +15,8 @@ import { messagesByLang as msg } from "./helpers/messages.js";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
-import {
-  checkAdmin,
-  authenticateJWT,
-  verifyUserTask,
-} from "./middlewares/validations.js";
-import { setOwner, setTask } from "./middlewares/setters.js";
+import { checkAdmin, authenticateJWT, verifyUserTask, validateUserId } from "./middlewares/validations.js";
+import { setCustomOwner, setTask } from "./middlewares/setters.js";
 
 export default class Server {
   constructor () {
@@ -47,20 +43,23 @@ export default class Server {
   }
 
   loadRoutes () {
+    const authMiddlewares = [authenticateJWT, checkAdmin];
+
     // Rutas para autenticación
     this.app.use("/api/auth", authRouter);
 
     // Rutas del usuario autenticado
     this.app.use("/api/me/profile", [authenticateJWT], profileRouter);
-    this.app.use("/api/me/tasks", [authenticateJWT, setOwner], tasksRouter);
+    this.app.use("/api/me/tasks", [authenticateJWT, setCustomOwner], tasksRouter);
     this.app.use("/api/me/tasks/:taskId/comments", [authenticateJWT, verifyUserTask, setTask], commentsRouter);
-    this.app.use("/api/me/projects", [authenticateJWT, setOwner], projectsRouter);
+    this.app.use("/api/me/projects", [authenticateJWT, setCustomOwner], projectsRouter);
 
     // Rutas para administración de usuarios
-    this.app.use("/api/users", [authenticateJWT, checkAdmin], adminUsersRouter);
-    this.app.use("/api/:userId/tasks", [authenticateJWT, checkAdmin], adminTasksRouter);
-    this.app.use("/api/:userId/tasks/:taskId/comments", [authenticateJWT, checkAdmin], adminCommentsRouter);
-    this.app.use("/api/:userId/projects", [authenticateJWT, checkAdmin], adminProjectsRouter);
+    this.app.use("/api/users", [authMiddlewares], adminUsersRouter);
+    this.app.use("/api/:userId/tasks", [authMiddlewares, validateUserId, setCustomOwner], adminTasksRouter);
+    this.app.use("/api/:userId/tasks/:taskId/comments", [authMiddlewares, validateUserId, verifyUserTask, setTask],
+      adminCommentsRouter);
+    this.app.use("/api/:userId/projects", [authMiddlewares, validateUserId, setCustomOwner], adminProjectsRouter);
 
     console.log("Routes loaded");
   }
