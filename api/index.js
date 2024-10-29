@@ -4,4 +4,4 @@ const server = new Server();
 server.connectBD();
 server.listen();
 
-export default server;
+export default server.app;
