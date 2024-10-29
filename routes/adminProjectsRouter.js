@@ -8,8 +8,10 @@ export const adminProjectsRouter = Router();
 
 adminProjectsRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
+adminProjectsRouter.use("/:id", [verifyUserProject]);
+
 adminProjectsRouter.route("/").
-  get(asyncHandler(projectsController.getAll)).
+  get(asyncHandler(projectsController.getByLoggedUser)).
   post(asyncHandler(projectsController.create));
 
 adminProjectsRouter.route("/:id").

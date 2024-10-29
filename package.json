@@ -2,12 +2,12 @@
   "name": "todo-list",
   "version": "1.0.0",
   "description": "API REST para gestionar una TODO-List",
-  "main": "index.js",
+  "main": "api/index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch index.js",
-    "start": "node run index.js"
+    "dev": "node --watch api/index.js",
+    "start": "node run api/index.js"
   },
   "repository": {
     "type": "git",
