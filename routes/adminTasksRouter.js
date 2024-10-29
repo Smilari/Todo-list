@@ -8,13 +8,11 @@ export const adminTasksRouter = Router();
 
 adminTasksRouter.disable("x-powered-by"); // Desactiva el header 'express'
 
-adminTasksRouter.use("/:id", [verifyUserTask]);
-
 adminTasksRouter.route("/").
   get(asyncHandler(tasksController.getByLoggedUser)).
   post([validateProject], asyncHandler(tasksController.create));
 
 adminTasksRouter.route("/:id").
-  get(asyncHandler(tasksController.getById)).
-  delete(asyncHandler(tasksController.delete)).
-  patch([validateProject], asyncHandler(tasksController.update));
+  get([verifyUserTask], asyncHandler(tasksController.getById)).
+  delete([verifyUserTask], asyncHandler(tasksController.delete)).
+  patch([verifyUserTask, validateProject], asyncHandler(tasksController.update));

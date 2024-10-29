@@ -36,7 +36,7 @@ export const checkAdmin = async (req, res, next) => {
 
 export const verifyUserTask = async (req, res, next) => {
   const { user } = req;
-  const taskId = req.params.taskId || req.body.task;
+  const taskId = req.params.taskId || req.params.id;
   try {
     req.task = await verifyOwnership(taskModel, taskId, user._id);
     next();
