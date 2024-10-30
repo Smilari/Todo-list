@@ -50,15 +50,15 @@ export default class Server {
 
     // Rutas del usuario autenticado
     this.app.use("/api/me/profile", [authenticateJWT], profileRouter);
-    this.app.use("/api/me/tasks", [authenticateJWT, setCustomOwner], tasksRouter);
     this.app.use("/api/me/tasks/:taskId/comments", [authenticateJWT, verifyUserTask, setTask], commentsRouter);
+    this.app.use("/api/me/tasks", [authenticateJWT, setCustomOwner], tasksRouter);
     this.app.use("/api/me/projects", [authenticateJWT, setCustomOwner], projectsRouter);
 
     // Rutas para administración de usuarios
     this.app.use("/api/users", [authMiddlewares], adminUsersRouter);
-    this.app.use("/api/:userId/tasks", [authMiddlewares, validateUserId, setCustomOwner], adminTasksRouter);
     this.app.use("/api/:userId/tasks/:taskId/comments", [authMiddlewares, validateUserId, verifyUserTask, setTask],
       adminCommentsRouter);
+    this.app.use("/api/:userId/tasks", [authMiddlewares, validateUserId, setCustomOwner], adminTasksRouter);
     this.app.use("/api/:userId/projects", [authMiddlewares, validateUserId, setCustomOwner], adminProjectsRouter);
 
     console.log("Routes loaded");

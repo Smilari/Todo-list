@@ -1,13 +1,6 @@
 export const setCustomOwner = async (req, res, next) => {
-  const { userId } = req.params;
-  const { role, id } = req.user;
-
-  if (role === "admin") {
-    req.body.owner = userId;
-  } else {
-    req.body.owner = id;
-  }
-
+  const { id } = req.user;
+  req.body.owner = id;
   next();
 };
 

@@ -47,7 +47,7 @@ export const verifyUserTask = async (req, res, next) => {
 
 export const verifyUserProject = async (req, res, next) => {
   const { user } = req;
-  const projectId = req.params.projectId || req.body.project;
+  const projectId = req.params.projectId || req.params.id;
   try {
     req.project = await verifyOwnership(projectModel, projectId, user._id);
     next();
