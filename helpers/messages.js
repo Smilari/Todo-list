@@ -8,6 +8,8 @@ const messages = {
     tokenNotValid: "Token is not valid",
     tokenNotFound: "Token not found",
     userNotFound: "User not found",
+    invalidEmail: "Invalid email",
+    userNotActive: "User is not active",
 
     // General messages
     minLength (minLength) {
@@ -40,6 +42,8 @@ const messages = {
     tokenNotValid: "El token no es válido",
     tokenNotFound: "Token no encontrado",
     userNotFound: "Usuario no encontrado",
+    invalidEmail: "Email no válido",
+    userNotActive: "El usuario no está activo",
 
     // Mensajes generales
     minLength (minLength) {

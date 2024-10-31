@@ -12,6 +12,13 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    email: {
+      type: String,
+      required: [true, msg.requiredField],
+      unique: true,
+      trim: true,
+      match: [/[a-zA-Z0-9.*%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}/, msg.invalidEmail],
+    },
     password: {
       type: String,
       required: [true, msg.requiredField],
@@ -19,9 +26,12 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      required: [true, msg.requiredField],
       enum: ["admin", "user"],
       default: "user",
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   {

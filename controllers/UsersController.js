@@ -16,8 +16,8 @@ export class UsersController extends BaseController {
 
   async updateByLoggedUser (req, res) {
     const { id } = req.user;
-    const { username, password } = req.body;
-    const user = await this.model.update({ id, input: { username, password } });
+    const { username, password, email } = req.body;
+    const user = await this.model.update({ id, input: { username, password, email } });
     res.json(user);
   }
 
