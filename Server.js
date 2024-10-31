@@ -17,6 +17,7 @@ import cors from "cors";
 import morgan from "morgan";
 import { checkAdmin, authenticateJWT, verifyUserTask, validateUserId } from "./middlewares/validations.js";
 import { setCustomOwner, setTask } from "./middlewares/setters.js";
+import cookieParser from "cookie-parser";
 
 export default class Server {
   constructor () {
@@ -38,6 +39,7 @@ export default class Server {
     this.app.use(helmet()); // Protege contra ataques XSS y CSRF
     this.app.use(cors()); // Permite la comunicación entre dominios externos
     this.app.use(morgan("dev")); // Registra las peticiones en el servidor
+    this.app.use(cookieParser());
 
     console.log("Middlewares loaded");
   }

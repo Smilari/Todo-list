@@ -5,20 +5,21 @@ import { ProjectModel } from "../models/ProjectModel.js";
 import { CommentModel } from "../models/CommentModel.js";
 import { Forbidden, handleError, Unauthorized } from "../helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
-import { PRIVATE_KEY } from "../helpers/config.js";
 import { verifyOwnership } from "../helpers/verifyOwnership.js";
+import { ACCESS_TOKEN_SECRET } from "../helpers/config.js";
 
 const userModel = new UserModel();
 const taskModel = new TaskModel();
 const projectModel = new ProjectModel();
 const commentModel = new CommentModel();
-export const authenticateJWT = async (req, res, next) => {
-  const token = req.header("x-token");
 
-  if (!token) return handleError(new Unauthorized(msg.tokenNotFound), res);
+export const authenticateJWT = async (req, res, next) => {
+  const accessToken = req.cookies?.accessToken;
+
+  if (!accessToken) return handleError(new Unauthorized(msg.accessTokenNotFound), res);
 
   try {
-    const { id } = jwt.verify(token, PRIVATE_KEY);
+    const { id } = jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
     req.user = await userModel.getById({ id });
     next();
   } catch (err) {
@@ -96,9 +97,7 @@ export const validateProject = async (req, res, next) => {
 export const validateUserId = async (req, res, next) => {
   const { userId } = req.params;
   try {
-    const user = await userModel.getById({ id: userId });
-
-    req.user = user;
+    req.user = await userModel.getById({ id: userId });
     next();
   } catch (err) {
     return handleError(err, res);

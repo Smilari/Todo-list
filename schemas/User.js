@@ -1,6 +1,13 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { messagesByLang as msg } from "../helpers/messages.js";
+import { generateJWT } from "../helpers/generateJWT.js";
+import {
+  ACCESS_TOKEN_EXPIRY,
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRY,
+  REFRESH_TOKEN_SECRET,
+} from "../helpers/config.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -32,6 +39,9 @@ const userSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    refreshToken: {
+      type: String,
     },
   },
   {
@@ -70,9 +80,23 @@ userSchema.method("isPasswordCorrect", async function (password) {
   return bcrypt.compare(password, this.password);
 });
 
+userSchema.method("generateAccessToken", function () {
+  return generateJWT(
+    { user: this, secretKey: ACCESS_TOKEN_SECRET, expiresIn: ACCESS_TOKEN_EXPIRY });
+});
+
+userSchema.method("generateRefreshToken", async function () {
+  const refreshToken = await generateJWT(
+    { user: this, secretKey: REFRESH_TOKEN_SECRET, expiresIn: REFRESH_TOKEN_EXPIRY });
+  this.refreshToken = refreshToken;
+  await this.save();
+  return refreshToken;
+});
+
 userSchema.set("toJSON", {
   transform: function (doc, ret) {
-    delete ret.password; // Eliminar la contraseña del resultado JSON
+    delete ret.password; // Elimina la contraseña del resultado JSON
+    delete ret.refreshToken; // Elimina el token del resultado JSON
     return ret;
   },
 });

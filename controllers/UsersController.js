@@ -23,13 +23,30 @@ export class UsersController extends BaseController {
 
   async register (req, res) {
     const { body } = req;
-    const { user, token } = await this.model.register({ input: body });
-    res.status(201).json({ token, user });
+    const { user } = await this.model.register({ input: body });
+    res.status(201).json({ user });
   }
 
   async login (req, res) {
     const { body } = req;
-    const { user, token } = await this.model.login({ input: body });
-    res.json({ token, user });
+    const { user, refreshToken, accessToken } = await this.model.login({ input: body });
+    res.cookie("refreshToken", refreshToken, { httpOnly: true }).
+      cookie("accessToken", accessToken, { httpOnly: true }).
+      json({ user });
+  }
+
+  async logout (req, res) {
+    const { user } = req;
+    await this.model.logout({ user });
+    res.clearCookie("accessToken").clearCookie("refreshToken").json({ msg: "Sesión cerrada" });
+  }
+
+  async refreshAccessToken (req, res) {
+    const { refreshToken } = req.cookies;
+
+    const { accessToken, newRefreshToken } = await this.model.refreshAccessToken({ refreshToken });
+    res.cookie("accessToken", accessToken, { httpOnly: true }).
+      cookie("refreshToken", newRefreshToken, { httpOnly: true }).
+      json({ msg: "Tokens refrescados" });
   }
 }
