@@ -5,7 +5,7 @@ import autoBind from "auto-bind";
 
 export class ProjectsController extends BaseController {
   constructor () {
-    super(new ProjectModel(), msg.projectNotFound);
+    super(new ProjectModel(), msg.error.projectNotFound);
     autoBind(this);
   }
 }

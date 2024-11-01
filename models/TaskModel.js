@@ -5,7 +5,7 @@ import { CommentModel } from "./CommentModel.js";
 
 export class TaskModel extends BaseModel {
   constructor () {
-    super(Task, msg.taskNotFound);
+    super(Task, msg.error.taskNotFound);
     this.commentModel = new CommentModel();
   }
 

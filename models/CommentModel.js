@@ -4,6 +4,6 @@ import { messagesByLang as msg } from "../helpers/messages.js";
 
 export class CommentModel extends BaseModel {
   constructor () {
-    super(Comment, msg.commentNotFound);
+    super(Comment, msg.error.commentNotFound);
   }
 }

@@ -5,7 +5,7 @@ import { TaskModel } from "./TaskModel.js";
 
 export class ProjectModel extends BaseModel {
   constructor () {
-    super(Project, msg.projectNotFound);
+    super(Project, msg.error.projectNotFound);
     this.taskModel = new TaskModel();
   }
 

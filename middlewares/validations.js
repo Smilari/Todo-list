@@ -16,7 +16,7 @@ const commentModel = new CommentModel();
 export const authenticateJWT = async (req, res, next) => {
   const accessToken = req.cookies?.accessToken;
 
-  if (!accessToken) return handleError(new Unauthorized(msg.accessTokenNotFound), res);
+  if (!accessToken) return handleError(new Unauthorized(msg.accessToken.notFound), res);
 
   try {
     const { id } = jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
@@ -30,7 +30,7 @@ export const authenticateJWT = async (req, res, next) => {
 export const checkAdmin = async (req, res, next) => {
   const { user } = req;
   if (user.role !== "admin")
-    return handleError(new Forbidden(msg.forbidden), res);
+    return handleError(new Forbidden(msg.error.forbidden), res);
 
   next();
 };
@@ -64,7 +64,7 @@ export const verifyTaskComment = async (req, res, next) => {
   try {
     const comment = await commentModel.getById({ id });
     if (comment.task.toString() !== task._id.toString()) {
-      throw new Forbidden(msg.forbidden);
+      throw new Forbidden(msg.error.forbidden);
     }
 
     req.comment = comment;
@@ -87,7 +87,7 @@ export const validateProject = async (req, res, next) => {
     const project = await projectModel.getById({ id: projectId });
 
     if (project.owner.toString() !== user._id.toString())
-      throw new Forbidden(msg.forbidden);
+      throw new Forbidden(msg.error.forbidden);
     next();
   } catch (err) {
     return handleError(err, res);

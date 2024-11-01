@@ -69,11 +69,11 @@ export default class Server {
   loadPostMiddlewares () {
     // Ruta por defecto para cualquier ruta no encontrada
     this.app.use((req, res) => {
-      handleError(new NotFound(msg.routeNotFound), res);
+      handleError(new NotFound(msg.error.routeNotFound), res);
     });
 
     // Middleware global para manejar errores
-    this.app.use((err, req, res, _) => {
+    this.app.use((err, _req, res, _next) => {
       handleError(err, res);
     });
 

@@ -10,7 +10,7 @@ export const generateJWT = ({ user, secretKey, expiresIn }) => {
       },
       (err, token) => {
         if (err) {
-          reject(handleError(err, msg.internalError));
+          reject(handleError(err, msg.error.generic));
         } else {
           resolve(token);
         }

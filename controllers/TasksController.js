@@ -5,7 +5,7 @@ import autoBind from "auto-bind";
 
 export class TasksController extends BaseController {
   constructor () {
-    super(new TaskModel(), msg.taskNotFound);
+    super(new TaskModel(), msg.error.taskNotFound);
     autoBind(this);
   }
 }

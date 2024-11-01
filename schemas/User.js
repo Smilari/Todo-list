@@ -13,23 +13,24 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, msg.requiredField],
-      minlength: [3, msg.minLength(3)],
-      maxlength: [20, msg.maxLength(20)],
+      required: [true, msg.validation.requiredField],
+      minlength: [3, msg.validation.minLength(3)],
+      maxlength: [20, msg.validation.maxLength(20)],
       unique: true,
       trim: true,
     },
     email: {
       type: String,
-      required: [true, msg.requiredField],
+      required: [true, msg.validation.requiredField],
       unique: true,
       trim: true,
-      match: [/[a-zA-Z0-9.*%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}/, msg.invalidEmail],
+      lowercase: true,
+      match: [/[a-zA-Z0-9.*%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}/, msg.validation.invalidEmail],
     },
     password: {
       type: String,
-      required: [true, msg.requiredField],
-      minlength: [6, msg.minLength(6)],
+      required: [true, msg.validation.requiredField],
+      minlength: [6, msg.validation.minLength(6)],
     },
     role: {
       type: String,

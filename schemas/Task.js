@@ -5,15 +5,15 @@ const taskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, msg.requiredField],
-      minlength: [2, msg.minLength(2)],
-      maxlength: [20, msg.maxLength(20)],
+      required: [true, msg.validation.requiredField],
+      minlength: [2, msg.validation.minLength(2)],
+      maxlength: [20, msg.validation.maxLength(20)],
       trim: true,
     },
     description: {
       type: String,
       required: false,
-      maxlength: [200, msg.maxLength(200)],
+      maxlength: [200, msg.validation.maxLength(200)],
     },
     dueDate: {
       type: Date,
@@ -22,12 +22,12 @@ const taskSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Pendiente", "En Progreso", "Terminado"],
-      required: [true, msg.requiredField],
+      required: [true, msg.validation.requiredField],
       default: "Pendiente",
     },
     priority: {
       type: Number,
-      required: [true, msg.requiredField],
+      required: [true, msg.validation.requiredField],
       default: 1,
     },
     category: {
@@ -37,7 +37,7 @@ const taskSchema = new mongoose.Schema(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: [true, msg.requiredField],
+      required: [true, msg.validation.requiredField],
     },
     project: {
       type: mongoose.Schema.Types.ObjectId,

@@ -1,18 +1,22 @@
 import { messagesByLang as msg } from "./messages.js";
+import mongoose from "mongoose";
+import { NODE_ENV } from "./config.js";
 
 export const handleError = ((err, res) => {
   const {
-    name = msg.internalError,
-    statusCode = 500,
-    message = msg.internalError,
+    name = msg.error.internal,
+    statusCode = err instanceof mongoose.Error ? 400 : 500,
+    message = msg.error.internal,
+    success = false,
+    stack,
   } = err;
-  console.log(err.stack);
+
   return res.status(statusCode).json({
     name,
-    status: "ERROR",
     statusCode,
     message,
-    // stackTrace: err.stack,
+    success,
+    ...(NODE_ENV === "development" ? { stack } : {}),
   });
 });
 
@@ -21,8 +25,9 @@ export const createErrorFactory = function (name, statusCode) {
     constructor (message) {
       super();
       this.name = name;
-      this.message = message;
       this.statusCode = statusCode;
+      this.message = message;
+      this.success = false;
     }
   };
 };

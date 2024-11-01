@@ -2,73 +2,82 @@ import { LANGUAGE } from "./config.js";
 
 const messages = {
   en: {
-    // User messages
-    validation: "Username/Password is not valid",
-    forbidden: "Access denied",
-    accessTokenNotValid: "Access token is not valid",
-    accessTokenNotFound: "Access token not found",
-    refreshTokenNotValid: "Refresh token is not valid",
-    userNotFound: "User not found",
-    invalidEmail: "Invalid email",
-    userNotActive: "User is not active",
-
-    // General messages
-    minLength (minLength) {
-      return `The field must be at least ${minLength} characters long`;
+    success: {
+      fetch: "Fetched successfully",
+      login: "Login successful",
+      register: "Registration successful",
+      delete: "Deleted successfully",
+      update: "Updated successfully",
+      create: "Created successfully",
+      refreshAccessToken: "Access token refreshed successfully",
     },
-    maxLength (maxLength) {
-      return `The field must be at most ${maxLength} characters long`;
+    validation: {
+      generic: "Validation failed",
+      usernamePassword: "Username/Password is not valid",
+      minLength: (minLength) => { `The field must be at least ${minLength} characters long`; },
+      maxLength: (maxLength) => { `The field must be at most ${maxLength} characters long`; },
+      requiredField: "This field is required",
+      invalidEmail: "Invalid email",
     },
-    internalError: "Internal Server Error",
-    requiredField: "This field is required",
-
-    // Routes messages
-    routeNotFound: "Route not found",
-
-    // Tasks messages
-    taskNotFound: "Task not found",
-    userNotProvided: "User not provided",
-
-    // Projects messages
-    projectNotFound: "Project not found",
-
-    // Comments messages
-    commentNotFound: "Comment not found",
+    accessToken: {
+      notFound: "Access token not found",
+      invalid: "Access token is not valid",
+    },
+    refreshToken: {
+      notFound: "Refresh token not found",
+      invalid: "Refresh token is not valid",
+    },
+    error: {
+      generic: "An error occurred",
+      internal: "Internal Server Error",
+      forbidden: "Access denied",
+      routeNotFound: "Route not found",
+      userNotFound: "User not found",
+      taskNotFound: "Task not found",
+      projectNotFound: "Project not found",
+      commentNotFound: "Comment not found",
+      userNotProvided: "User not provided",
+      userNotActive: "User is not active",
+    },
   },
   es: {
-    // Mensajes de usuario
-    validation: "Usuario/Contraseña no válidos",
-    forbidden: "Acceso denegado",
-    notSufficientPermissions: "No tiene suficientes permisos para hacer esto",
-    accessTokenNotValid: "El token de acceso no es válido",
-    accessTokenNotFound: "Token de acceso no encontrado",
-    refreshTokenNotValid: "El token de refresco no es válido",
-    userNotFound: "Usuario no encontrado",
-    invalidEmail: "Email no válido",
-    userNotActive: "El usuario no está activo",
-
-    // Mensajes generales
-    minLength (minLength) {
-      return `El campo debe tener al menos ${minLength} caracteres`;
+    success: {
+      fetch: "Datos recuperados exitosamente",
+      login: "Login exitoso",
+      register: "Registro exitoso",
+      delete: "Borrado exitoso",
+      update: "Actualizado exitoso",
+      create: "Creado exitoso",
+      refreshAccessToken: "Token renovado exitosamente",
     },
-    maxLength (maxLength) {
-      return `El campo debe tener como máximo ${maxLength} caracteres`;
+    validation: {
+      generic: "Error de validación",
+      usernamePassword: "Usuario/Contraseña no válidos",
+      minLength: (minLength) => { `El campo debe tener al menos ${minLength} caracteres`; },
+      maxLength: (maxLength) => { `El campo debe tener como máximo ${maxLength} caracteres`; },
+      requiredField: "Este campo es obligatorio",
+      invalidEmail: "Email no válido",
     },
-    internalError: "Error de servidor interno",
-    requiredField: "Este campo es obligatorio",
-
-    // Mensajes de las rutas
-    routeNotFound: "Ruta no encontrada",
-
-    // Mensajes de las tareas
-    taskNotFound: "Tarea no encontrada",
-    UserNotProvided: "Usuario no proporcionado",
-
-    // Mensajes de los proyectos
-    projectNotFound: "Proyecto no encontrado",
-
-    // Mensajes de los comentarios
-    commentNotFound: "Comentario no encontrado",
+    accessToken: {
+      notFound: "Token de acceso no encontrado",
+      invalid: "Token de acceso no válido",
+    },
+    refreshToken: {
+      notFound: "Token de refresco no encontrado",
+      invalid: "Token de refresco no válido",
+    },
+    error: {
+      generic: "Ocurrió un error",
+      internal: "Error de servidor interno",
+      forbidden: "Acceso denegado",
+      routeNotFound: "Ruta no encontrada",
+      userNotFound: "Usuario no encontrado",
+      taskNotFound: "Tarea no encontrada",
+      projectNotFound: "Proyecto no encontrado",
+      commentNotFound: "Comentario no encontrado",
+      userNotProvided: "Usuario no proporcionado",
+      userNotActive: "El usuario no está activo",
+    },
   },
 };
 
