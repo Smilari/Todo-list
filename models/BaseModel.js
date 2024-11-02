@@ -1,5 +1,6 @@
 import { NotFound } from "../helpers/ErrorHandler.js";
 
+
 export class BaseModel {
   constructor (model, notFoundMessage) {
     this.model = model;
