@@ -39,7 +39,7 @@ export class BaseController {
 
   async delete (req, res) {
     const { id } = req.params;
-    await this.model.delete({ id });
-    res.status(204).json(new ApiResponse({}, 204, msg.success.delete));
+    const data = await this.model.delete({ id });
+    res.json(new ApiResponse(data, 204, msg.success.delete));
   }
 }
