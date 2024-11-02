@@ -5,6 +5,7 @@ const messages = {
     success: {
       fetch: "Fetched successfully",
       login: "Login successful",
+      logout: "Logout successful",
       register: "Registration successful",
       delete: "Deleted successfully",
       update: "Updated successfully",
@@ -44,6 +45,7 @@ const messages = {
     success: {
       fetch: "Datos recuperados exitosamente",
       login: "Login exitoso",
+      logout: "Logout exitoso",
       register: "Registro exitoso",
       delete: "Borrado exitoso",
       update: "Actualizado exitoso",
