@@ -30,7 +30,7 @@ export class BaseModel {
 
   async update ({ id, input, session }) {
     const doc = await this.model.findByIdAndUpdate(id, input,
-      { session, new: true, runValidators: true });
+      { session, new: true, runValidators: true, upsert: false});
     if (!doc) throw new NotFound(this.notFoundMessage);
 
     return doc;
