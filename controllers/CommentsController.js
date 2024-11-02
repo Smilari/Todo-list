@@ -9,7 +9,7 @@ export class CommentsController extends BaseController {
     super(new CommentModel(), msg.error.commentNotFound);
     autoBind(this);
   }
-
+  
   async getByTask (req, res) {
     const { task } = req;
     const comments = await this.model.getByFilter({ filter: { task: task.id } });

@@ -11,7 +11,7 @@ adminCommentsRouter.disable("x-powered-by"); // Desactiva el header 'express'
 adminCommentsRouter.use("/:id", [verifyTaskComment]);
 
 adminCommentsRouter.route("/").
-  get(asyncHandler(commentsController.getByLoggedUser)).
+  get(asyncHandler(commentsController.getByTask)).
   post(asyncHandler(commentsController.create));
 
 adminCommentsRouter.route("/:id").
