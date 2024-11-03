@@ -15,8 +15,6 @@ tanto en ambientes locales como en la nube.
 La API está desplegada en **Vercel** y puede ser utilizada desde el siguiente
 enlace [todografo.vercel.app](https://todografo.vercel.app/). Podés probar utilizando herramientas como **Postman**.
 
----
-
 ## 🛠 Tecnologías Utilizadas
 
 - **Node.js**: Entorno de ejecución para el backend.
@@ -31,8 +29,6 @@ enlace [todografo.vercel.app](https://todografo.vercel.app/). Podés probar util
 - **cookie-parser**: Para analizar cookies.
 - **dotenv**: Para gestionar variables de entorno.
 - **auto-bind**: Para vincular automáticamente métodos de clase al contexto.
-
----
 
 ## 🔧 Instalación y Configuración
 
@@ -80,8 +76,6 @@ npm run dev
 ```
 
 La API estará disponible en `http://localhost:3000`
-
----
 
 ## 🔒 Seguridad y Autenticación
 

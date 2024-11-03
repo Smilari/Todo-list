@@ -39,7 +39,7 @@ export class UsersController extends BaseController {
   async logout (req, res) {
     const { user } = req;
     await this.model.logout({ user });
-    res.json(new ApiResponse({},204,msg.success.logout)).clearCookie("accessToken").clearCookie("refreshToken").send();
+    res.clearCookie("accessToken").clearCookie("refreshToken").json(new ApiResponse({}, 204, msg.success.logout));
   }
 
   async refreshAccessToken (req, res) {
