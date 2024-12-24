@@ -3,6 +3,8 @@ import { UserModel } from "../models/UserModel.js";
 import { messagesByLang as msg } from "../helpers/messages.js";
 import autoBind from "auto-bind";
 import { ApiResponse } from "../helpers/ApiResponse.js";
+import { NODE_ENV } from "../helpers/config.js";
+import { accessTokenMaxAge, refreshTokenMaxAge } from "../helpers/parseExpiry.js";
 
 export class UsersController extends BaseController {
   constructor () {
@@ -31,8 +33,9 @@ export class UsersController extends BaseController {
   async login (req, res) {
     const { body } = req;
     const { user, refreshToken, accessToken } = await this.model.login({ input: body });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true, sameSite: "none", secure:true }). 
-      cookie("accessToken", accessToken, { httpOnly: true, sameSite: "none", secure:true }).
+    const isProduction = NODE_ENV === "production";
+    res.cookie("refreshToken", refreshToken, { httpOnly: true, sameSite: "none", secure:isProduction, maxAge: refreshTokenMaxAge }).
+      cookie("accessToken", accessToken, { httpOnly: true, sameSite: "none", secure:isProduction, maxAge: accessTokenMaxAge }).
       json(new ApiResponse(user, 200, msg.success.login));
   }
 
