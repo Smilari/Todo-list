@@ -50,4 +50,8 @@ export class UsersController extends BaseController {
       cookie("refreshToken", newRefreshToken, { httpOnly: true }).
       json(new ApiResponse({}, 200, msg.success.refreshAccessToken));
   }
+
+  async validateAccessToken (req, res) {
+    res.json(new ApiResponse({}, 200));
+  }
 }
