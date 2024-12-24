@@ -94,8 +94,7 @@ La API soporta dos tipos de usuarios:
 
 ## 🌐 Endpoints
 
-> Nota: La documentación detallada de cada endpoint se encuentra en Postman y no se incluye aquí para evitar
-> redundancia.
+Podes encontrar la **documentación detallada** para cada endpoint con su respectivo ejemplo en [este link](https://documenter.getpostman.com/view/37949944/2sAY4xB2qK). No se incluye aquí para evitar redundancia.
 
 ### Rutas para usuarios
 
