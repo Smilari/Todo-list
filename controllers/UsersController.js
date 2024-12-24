@@ -47,10 +47,11 @@ export class UsersController extends BaseController {
 
   async refreshAccessToken (req, res) {
     const { refreshToken } = req.cookies;
-
     const { accessToken, newRefreshToken } = await this.model.refreshAccessToken({ refreshToken });
-    res.cookie("accessToken", accessToken, { httpOnly: true }).
-      cookie("refreshToken", newRefreshToken, { httpOnly: true }).
+
+    const isProduction = NODE_ENV === "production";
+    res.cookie("refreshToken", newRefreshToken, { httpOnly: true, sameSite: "none", secure:isProduction, maxAge: refreshTokenMaxAge }).
+      cookie("accessToken", accessToken, { httpOnly: true, sameSite: "none", secure:isProduction, maxAge: accessTokenMaxAge }).
       json(new ApiResponse({}, 200, msg.success.refreshAccessToken));
   }
 
