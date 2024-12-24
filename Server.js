@@ -38,10 +38,19 @@ export default class Server {
     this.app.use(express.json()); // Parsea el body del request para solicitudes de tipo POST y PUT
     this.app.use(helmet()); // Protege contra ataques XSS y CSRF
     const allowedOrigins = CORS_ORIGIN.split(",");
-    this.app.use(cors({ origin: allowedOrigins,
-      credentials: true,
-    })); // Permite la comunicación entre dominios externos
-    this.app.use(cors()); // Permite la comunicación entre dominios externos
+
+    // Configuración de CORS
+    this.app.use(cors({
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        credentials: true, // Permite enviar cookies y encabezados de autenticación
+    }));
+
     this.app.use(morgan("dev")); // Registra las peticiones en el servidor
     this.app.use(cookieParser());
 
