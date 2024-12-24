@@ -11,5 +11,5 @@ authRouter.disable("x-powered-by"); // Desactiva el header 'express'
 authRouter.post("/login", asyncHandler(usersController.login));
 authRouter.post("/register", asyncHandler(usersController.register));
 authRouter.post("/refreshAccessToken", asyncHandler(usersController.refreshAccessToken));
-authRouter.get("/validateAccessToken",[authenticateJWT], asyncHandler(usersController.validateAccessToken));
+authRouter.post("/validateAccessToken",[authenticateJWT], asyncHandler(usersController.validateAccessToken));
 authRouter.post("/logout", [authenticateJWT], asyncHandler(usersController.logout));
