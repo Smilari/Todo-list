@@ -37,6 +37,10 @@ export default class Server {
   loadPreMiddlewares () {
     this.app.use(express.json()); // Parsea el body del request para solicitudes de tipo POST y PUT
     this.app.use(helmet()); // Protege contra ataques XSS y CSRF
+    const allowedOrigins = CORS_ORIGIN.split(",");
+    this.app.use(cors({ origin: allowedOrigins,
+      credentials: true,
+    })); // Permite la comunicación entre dominios externos
     this.app.use(cors()); // Permite la comunicación entre dominios externos
     this.app.use(morgan("dev")); // Registra las peticiones en el servidor
     this.app.use(cookieParser());
