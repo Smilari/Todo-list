@@ -9,7 +9,7 @@ import { profileRouter } from "./routes/profileRouter.js";
 import { adminTasksRouter } from "./routes/adminTasksRouter.js";
 import { adminProjectsRouter } from "./routes/adminProjectsRouter.js";
 import { adminCommentsRouter } from "./routes/adminCommentsRouter.js";
-import { MONGO_URI, PORT } from "./helpers/config.js";
+import { MONGO_URI, PORT, CORS_ORIGIN } from "./helpers/config.js";
 import { handleError, NotFound } from "./helpers/ErrorHandler.js";
 import { messagesByLang as msg } from "./helpers/messages.js";
 import helmet from "helmet";
