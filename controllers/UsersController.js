@@ -31,8 +31,8 @@ export class UsersController extends BaseController {
   async login (req, res) {
     const { body } = req;
     const { user, refreshToken, accessToken } = await this.model.login({ input: body });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true }).
-      cookie("accessToken", accessToken, { httpOnly: true }).
+    res.cookie("refreshToken", refreshToken, { httpOnly: true, sameSite: "none", secure:true }). 
+      cookie("accessToken", accessToken, { httpOnly: true, sameSite: "none", secure:true }).
       json(new ApiResponse(user, 200, msg.success.login));
   }
 
